@@ -1,0 +1,60 @@
+@import "bootstrap.css";
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+html,
+body {
+  background-color: #23272A !important;
+  font-family: 'Varela Round', sans-serif;
+  color: #eeeeee;
+  height: 100%;
+  width: 100%;
+}
+#messages {
+  font-size: 20px !important;
+  padding-top: 15px;
+  padding-left: 15px;
+  height: 90%;
+  border: none;
+}
+#messages p {
+  margin-top: -20px;
+}
+#ooga {
+  padding: 10px;
+  height: 90%;
+}
+/*.username::before {
+    content: '<';
+}*/
+.username::after {
+  color: #77ffd2 !important;
+  content: ' »';
+}
+#text {
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+input {
+  font-size: 20px !important;
+  color: #fafafa !important;
+  border: none !important;
+}
+.center {
+  text-align: center;
+}
+.profile {
+  width: 128px;
+  height: 128px;
+  display: flex;
+  justify-content: center;
+}
+#content {
+  margin-top: 25px;
+}
