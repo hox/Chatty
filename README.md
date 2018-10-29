@@ -4,6 +4,10 @@ Chatty is a simple chat application written in javascript, it was started in Oct
 ## FAQ
 - Coming Soon
 
+## Contributors
+- [Ceaser](https://ceasergaming.com)
+- [Luke](https://lukewhrit.xyz)
+
 ## Links
 - Official Website @ http://chat.ceasergaming.com
 - Discord Invite @ https://discord.gg/VxjhBPJ
