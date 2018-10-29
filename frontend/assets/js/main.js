@@ -1,5 +1,5 @@
 var wss = new WebSocket("ws://localhost:35012");
-
+var token = "";
 function signinFormSubmit() {
     var username = document.getElementById("signinFormUser").value;
     var password = document.getElementById("signinFormPass").value;
@@ -21,7 +21,7 @@ function sendMessage() {
 }
 
 wss.addEventListener("message", function(message) {
-    var data = JSON.parse(message);
+    var data = JSON.parse(message.data);
     if(data.TYPE == "MESSAGE") {
         document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.username + "</span> <span class='message'>" + data.message + "</span></p>";
         var scroller = document.getElementById('messages');
@@ -29,9 +29,19 @@ wss.addEventListener("message", function(message) {
         return;
     } else
     if(data.TYPE == "SIGNIN") {
-
+        if(data.MESSAGE == "USERDATA_INVALID") {
+            window.location.href = window.location.href + "./userdata_invalid.html"
+        } else {
+            token = data.TOKEN;
+            $('#exampleModalCenter').modal('hide');
+        }
     } else
-    if(data.TYPE == "SINGUP") {
-
+    if(data.TYPE == "SIGNUP") {
+        if(data.MESSAGE == "USERNAME_TAKEN") {
+            window.location.href = window.location.href + "username_taken.html"
+        } else {
+            token = data.TOKEN;
+            $('#signup').modal('hide');
+        }
     }
 });

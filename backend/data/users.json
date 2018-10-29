@@ -1,29 +1,10 @@
 {
     "users": [
         {
-            "username": "jeff",
-            "password": "boop"
-        },
-        {
-            "username": "mark",
-            "password": "poob"
-        },
-        {
-            "PASSWORD": {
-                "words": [
-                    -474954686,
-                    -1728308204,
-                    -1694763832,
-                    -1720731356,
-                    665731556,
-                    1687917388,
-                    -1533699813,
-                    2018687061
-                ],
-                "sigBytes": 32
-            },
+            "USERNAME": "Ceaser",
+            "PASSWORD": "407352d41c0fd27ac266056bd16c518df15797396eb6d37b738e1081ced71675",
             "ADMIN": false,
-            "TOKEN": "556b6eae7a632e5a"
+            "TOKEN": "253381e104eb80364f889d9e8f558147"
         }
     ]
 }

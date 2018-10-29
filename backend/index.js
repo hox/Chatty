@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 var rtg = require('random-token-generator');
 var fs = require('fs');
-var SHA256 = require('js-sha256');
+var SHA256 = require('js-sha256').sha256;
 
 const wss = new WebSocket.Server({
     port: 35012,
@@ -35,17 +35,17 @@ wss.on("connection", function connection(ws) {
         if(json.TYPE == "SIGNIN") {
             var newjson = JSON.parse(fs.readFileSync("./data/users.json"));
             newjson.users.forEach(function(element) {
-                if(element.username == json.USERNAME && element.password == SHA256.sha256(json.password)) {
+                if(element.USERNAME == json.USERNAME && element.PASSWORD == SHA256(json.PASSWORD)) {
                     return ws.send(element.token);
                 }
             });
-            return ws.send("USERDATA_INVALID");
+            return ws.send(JSON.stringify({"TYPE": "SIGNIN", "MESSAGE": "USERDATA_INVALID"}));
         } else
         if(json.TYPE == "SIGNUP") {
             var newjson = JSON.parse(fs.readFileSync("./data/users.json"));
             newjson.users.forEach(function(element) {
-                if(element.username == json.username) {
-                    return ws.send("USERNAME_TAKEN");
+                if(element.username == json.USERNAME) {
+                    return ws.send({"TYPE": "SIGNUP", "MESSAGE": "USERNAME_TAKEN"});
                 }
             });
             rtg.generateKey({
@@ -54,7 +54,7 @@ wss.on("connection", function connection(ws) {
                 strong: true, 
                 retry: true
             }, function(err, key) {
-                newjson.users.push({"USERNAME": json.username, "PASSWORD": SHA256.sha256(json.password), "ADMIN": false, "TOKEN": key});
+                newjson.users.push({"USERNAME": json.USERNAME, "PASSWORD": SHA256(json.PASSWORD), "ADMIN": false, "TOKEN": key});
                 fs.writeFileSync( "./data/users.json", JSON.stringify(newjson)); 
             });
         }
