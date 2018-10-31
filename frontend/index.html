@@ -7,8 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chatty</title>
 
-    <!-- ! -->
-
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
@@ -21,82 +19,88 @@
 </head>
 
 <body>
-    <button id="oof" type="button" class="btn btn-primary" data-toggle="modal" data-target="#startup" style="display:none;"
-        data-backdrop="static" data-keyboard="false"></button>
-    <button id="closeDia" type="button" class="btn btn-primary" data-dismiss="modal" style="display:none;"></button>
-    <div class="modal fade" id="startup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true" style="margin: auto; width: 30vh;">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="bg-dark modal-content">
-                <div class="modal-body" style="display: flex; justify-content: center;">
-                    <button class="btn btn-primary" data-backdrop="static" data-keyboard="false" data-target="#exampleModalCenter"
-                        onClick="$('#startup').modal('hide'); $('#exampleModalCenter').modal('show');">Signin</button>&nbsp;
-                    <button class="btn btn-primary" data-backdrop="static" data-keyboard="false" data-target="#signup"
-                        onClick="$('#startup').modal('hide'); $('#signup').modal('show');">Signup</button>
+    <!-- ! Modals -->
+    <div id="otherstuff">
+        <button id="oof" type="button" class="btn btn-primary" data-toggle="modal" data-target="#startup" style="display:none;"
+            data-backdrop="static" data-keyboard="false"></button>
+        <button id="closeDia" type="button" class="btn btn-primary" data-dismiss="modal" style="display:none;"></button>
+        <div class="modal fade" id="startup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true" style="margin: auto; width: 30vh;">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="bg-dark modal-content">
+                    <div class="modal-body" style="display: flex; justify-content: center;">
+                        <button class="btn btn-primary" data-backdrop="static" data-keyboard="false" data-target="#exampleModalCenter"
+                            onClick="$('#startup').modal('hide'); $('#exampleModalCenter').modal('show');">Signin</button>&nbsp;
+                        <button class="btn btn-primary" data-backdrop="static" data-keyboard="false" data-target="#signup"
+                            onClick="$('#startup').modal('hide'); $('#signup').modal('show');">Signup</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="bg-dark modal-content">
-                <div class="modal-body">
-                    <form class="my-form" onsubmit="signinFormSubmit(); return false;" id="oogaBaloogana">
-                        <label for="username">Username</label>
-                        <input autocomplete="false" id="signinFormUser" name="username" class="bg-dark form-control"
-                            type="text" placeholder="Username" />
-                        <br>
-                        <label for="password">Password</label>
-                        <input autocomplete="false" id="signinFormPass" name="password" class="bg-dark form-control"
-                            type="password" placeholder="Password" />
-                        <br>
-                        <input style="margin: 0 auto; display: flex; justify-content: center;" name="submitino" type="submit"
-                            class="btn btn-primary">
-                    </form>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="bg-dark modal-content">
+                    <div class="modal-body">
+                        <form class="my-form" onsubmit="signinFormSubmit(); return false;" id="oogaBaloogana">
+                            <label for="username">Username</label>
+                            <input autocomplete="false" id="signinFormUser" name="username" class="bg-dark form-control"
+                                type="text" placeholder="Username" />
+                            <br>
+                            <label for="password">Password</label>
+                            <input autocomplete="false" id="signinFormPass" name="password" class="bg-dark form-control"
+                                type="password" placeholder="Password" />
+                            <br>
+                            <input style="margin: 0 auto; display: flex; justify-content: center;" name="submitino" type="submit"
+                                class="btn btn-primary">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="bg-dark modal-content">
-                <div class="modal-body" id="signupy">
-                    <form class="signup-form" onsubmit="signupFormSubmit(); return false;" id="signup-form">
-                        <label for="username">Username</label>
-                        <input autocomplete="false" id="signupformUser" name="username" class="bg-dark form-control"
-                            type="text" placeholder="Username" />
-                        <br>
-                        <label for="password">Password</label>
-                        <input autocomplete="false" id="signupformPass" name="password" class="bg-dark form-control"
-                            type="password" placeholder="Password" />
-                        <br>
-                        <input style="margin: 0 auto; display: flex; justify-content: center;" name="submitino" type="submit"
-                            class="btn btn-primary">
-                    </form>
+        <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="bg-dark modal-content">
+                    <div class="modal-body" id="signupy">
+                        <form class="signup-form" onsubmit="signupFormSubmit(); return false;" id="signup-form">
+                            <label for="username">Username</label>
+                            <input autocomplete="false" id="signupformUser" name="username" class="bg-dark form-control"
+                                type="text" placeholder="Username" />
+                            <br>
+                            <label for="password">Password</label>
+                            <input autocomplete="false" id="signupformPass" name="password" class="bg-dark form-control"
+                                type="password" placeholder="Password" />
+                            <br>
+                            <input style="margin: 0 auto; display: flex; justify-content: center;" name="submitino" type="submit"
+                                class="btn btn-primary">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <a data-controls-modal="exampleModalCenter" data-backdrop="static" data-keyboard="false" href="#"></a>
+        <a data-controls-modal="exampleModalCenter" data-backdrop="static" data-keyboard="false" href="#"></a>
+    </div>
+    <!-- !/ Modals -->
 
-    <!-- WHERE THE MAGIC ACTUALLY HAPPENS-->
-    <div class="container">
-        <div class="row" style="height: 100%; align-items: center; align-content: center;">
+    <!-- ! Container -->
+    <div class="container" style="height: 100%">
+        <div class="row">
             <!-- ? SIDEBAR -->
-            <div class="col-md-3" style="padding: 10px; padding-left: 3px; height: 98%; padding-right: 0px;">
-                <div id="sidebar" class="bg-dark" style="background-color: #23272A;border-radius: 5px; min-height: 100%; overflow: hidden; overflow-y: auto; overflow-anchor: auto;"></div>
+            <div class="col-md-3">
+                <div id="sidebar" class="bg-dark" style="background-color: #23272A;overflow: hidden; overflow-y: auto; overflow-anchor: auto;">
+                    <div id="usersArea"></div>
+                </div>
             </div>
             <!-- ?/ SIDEBAR -->
             <!-- ? CHAT -->
-            <div class="col-md-8" style="padding-left: 3px; padding-right: 0 !important;">
-                <div id="ooga" style="padding-right: 0 !important;">
-                    <div id="messages" class="bg-dark" style="border-radius: 5px; padding-top: 30px; min-height: 100%; overflow: hidden; overflow-y: auto; overflow-anchor: auto;">
+            <div class="col-md-8">
+                <div id="ooga">
+                    <div id="messages" class="bg-dark" style="overflow: hidden; overflow-y: auto; overflow-anchor: auto;">
                     </div>
                 </div>
-                <div id="text" style="padding-right: 0 !important;">
+                <div id="text">
                     <input autocomplete="false" name="message" id="messageId" class="bg-dark form-control" type="text"
                         placeholder="Send message to chat..." onchange="sendMessage()">
                 </div>
@@ -104,9 +108,8 @@
             <!-- ?/ CHAT -->
         </div>
     </div>
-
-
-    <script>$('#oof').click();</script>
+    <!-- !/ Container -->
+    <script>//$('#oof').click();</script>
 </body>
 
 </html>

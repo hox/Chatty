@@ -1,10 +1,1 @@
-{
-    "users": [
-        {
-            "USERNAME": "Ceaser",
-            "PASSWORD": "407352d41c0fd27ac266056bd16c518df15797396eb6d37b738e1081ced71675",
-            "ADMIN": false,
-            "TOKEN": "253381e104eb80364f889d9e8f558147"
-        }
-    ]
-}
+{"users":[{"USERNAME":"Ceaser","PASSWORD":"407352d41c0fd27ac266056bd16c518df15797396eb6d37b738e1081ced71675","ADMIN":true,"TOKEN":"253381e104eb80364f889d9e8f558147"},{"COMMENT":"luke get's a comment because why not :)","USERNAME":"Luke","PASSWORD":"ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f","ADMIN":true,"TOKEN":"e1041956b1261ff36395130ee4e117f0"},{"USERNAME":"Luke","PASSWORD":"ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f","ADMIN":false,"TOKEN":"c1e130c219813cd27ff15fb7396feb40"},{"USERNAME":"Luke","PASSWORD":"ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f","ADMIN":false,"TOKEN":"15409ffd62ab17d7adc7f50d9e1903ca"}]}

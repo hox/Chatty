@@ -2,6 +2,7 @@ const WebSocket = require('ws');
 var rtg = require('random-token-generator');
 var fs = require('fs');
 var SHA256 = require('js-sha256').sha256;
+const { format } = require('json-string-formatter');
 
 const wss = new WebSocket.Server({
     port: 35012,
@@ -22,30 +23,57 @@ const wss = new WebSocket.Server({
     }
 });
 
+var current_alive = [];
+
 wss.on("connection", function connection(ws) {
     ws.on('message', function incoming(message) {
-        console.log('received: ' +  message);
         var json = JSON.parse(message);
-        if(json.TYPE == "CONNECTION") {
-            wss.broadcast("heyo")
+        if(json.TYPE == "UPDATE") {
+            if(json.TOKEN == "") return;
+            var newjson = JSON.parse(fs.readFileSync("./data/users.json"));
+            newjson.users.forEach(function(element) {
+                if(element.TOKEN == json.TOKEN) {
+                    var oof = false;
+                    current_alive.forEach(function(newele) {
+                        if(newele == element.USERNAME) {
+                            oof = true;
+                        }
+                    });
+                    if(!oof) current_alive.push(element.USERNAME);
+                }
+            }); 
+            wss.broadcast(JSON.stringify({"TYPE": "USERS", "MESSAGE": current_alive}));
         } else 
         if(json.TYPE == "MESSAGE") {
-
+            json.MESSAGE.replaceAll("<", "&lt").replaceAll(">", "&gt;").trim();
+            var username = "";
+            var newjson = JSON.parse(fs.readFileSync("./data/users.json"));
+            newjson.users.forEach(function(element) {
+                if(element.TOKEN == json.TOKEN) {
+                    username = element.USERNAME;
+                }
+            });
+            if(username == "") return;
+            wss.broadcast(JSON.stringify({"TYPE": "MESSAGE", "USERNAME": username, "MESSAGE": json.MESSAGE, "CHANNEL": json.CHANNEL}));
         } else
         if(json.TYPE == "SIGNIN") {
             var newjson = JSON.parse(fs.readFileSync("./data/users.json"));
+            var oof = false;
             newjson.users.forEach(function(element) {
                 if(element.USERNAME == json.USERNAME && element.PASSWORD == SHA256(json.PASSWORD)) {
-                    return ws.send(element.token);
+                    ws.send(JSON.stringify({"TYPE": "SIGNIN", "MESSAGE": element.TOKEN}));
+                    oof = true;
                 }
             });
-            return ws.send(JSON.stringify({"TYPE": "SIGNIN", "MESSAGE": "USERDATA_INVALID"}));
+            if(!oof)
+                return ws.send(JSON.stringify({"TYPE": "SIGNIN", "MESSAGE": "USERDATA_INVALID"}));
         } else
         if(json.TYPE == "SIGNUP") {
             var newjson = JSON.parse(fs.readFileSync("./data/users.json"));
             newjson.users.forEach(function(element) {
                 if(element.username == json.USERNAME) {
-                    return ws.send({"TYPE": "SIGNUP", "MESSAGE": "USERNAME_TAKEN"});
+                    ws.send({"TYPE": "SIGNUP", "MESSAGE": "USERNAME_TAKEN"});
+                    return;
                 }
             });
             rtg.generateKey({
@@ -66,3 +94,12 @@ wss.broadcast = function broadcast(msg) {
         client.send(msg);
      });
  };
+
+ String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+setInterval(function() {
+    console.log(current_alive);
+}, 1000);

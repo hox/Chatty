@@ -1,11 +1,17 @@
 var wss = new WebSocket("ws://localhost:35012");
+
 var token = "";
+
 function signinFormSubmit() {
     var username = document.getElementById("signinFormUser").value;
     var password = document.getElementById("signinFormPass").value;
     wss.send(JSON.stringify({"TYPE": "SIGNIN", "USERNAME": username, "PASSWORD": password}));
     setTimeout(function() {}, 3000);
 }
+
+setInterval( function() {
+    wss.send(JSON.stringify({"TYPE": "UPDATE", "TOKEN": token}));
+}, 10000);
 
 function signupFormSubmit() {
     var username = document.getElementById("signupformUser").value;
@@ -18,30 +24,34 @@ function sendMessage() {
     var message = document.getElementById("messageId").value;
     var channel = "main";
     wss.send(JSON.stringify({"TYPE": "MESSAGE", "TOKEN": token, "MESSAGE": message, "CHANNEL": channel}))
+    document.getElementById("messageId").value = null;
 }
 
 wss.addEventListener("message", function(message) {
     var data = JSON.parse(message.data);
     if(data.TYPE == "MESSAGE") {
-        document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.username + "</span> <span class='message'>" + data.message + "</span></p>";
+        document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
         var scroller = document.getElementById('messages');
-        scroller.scrollTop = theDiv.scrollHeight;
+        scroller.scrollTop = scroller.scrollHeight;
         return;
     } else
     if(data.TYPE == "SIGNIN") {
         if(data.MESSAGE == "USERDATA_INVALID") {
-            window.location.href = window.location.href + "./userdata_invalid.html"
+            window.location.href = "./userdata_invalid.html"
         } else {
-            token = data.TOKEN;
+            token = data.MESSAGE;
             $('#exampleModalCenter').modal('hide');
         }
     } else
     if(data.TYPE == "SIGNUP") {
         if(data.MESSAGE == "USERNAME_TAKEN") {
-            window.location.href = window.location.href + "username_taken.html"
+            window.location.href = "./username_taken.html"
         } else {
-            token = data.TOKEN;
+            token = data.MESSAGE;
             $('#signup').modal('hide');
         }
+    } else
+    if(data.TYPE == "USERS") {
+        document.getElementById("usersArea").innerText = data.MESSAGE.join("<br>");
     }
 });

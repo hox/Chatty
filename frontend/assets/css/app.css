@@ -25,15 +25,11 @@ body {
 #messages p {
   margin-top: -20px;
 }
-#ooga {
-  padding: 10px;
-  height: 90%;
-}
 /*.username::before {
     content: '<';
 }*/
 .username::after {
-  color: #77ffd2 !important;
+  color: #ccc !important;
   content: ' »';
 }
 #text {
@@ -45,6 +41,9 @@ input {
   font-size: 20px !important;
   color: #fafafa !important;
   border: none !important;
+}
+.form-control {
+  border-radius: none !important;
 }
 .center {
   text-align: center;
