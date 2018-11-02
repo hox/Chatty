@@ -26,6 +26,12 @@ const wss = new WebSocket.Server({
 var current_alive = [];
 
 wss.on("connection", function connection(ws) {
+    setInterval(function() {
+        wss.broadcast(JSON.stringify({"TYPE": "PING"}));
+        current_alive = [];
+        setTimeout(function() {}, 3000);
+        wss.broadcast(JSON.stringify({"TYPE": "USERS", "MESSAGE": current_alive}));
+    }, 10000)
     ws.on('message', function incoming(message) {
         var json = JSON.parse(message);
         if(json.TYPE == "UPDATE") {
@@ -42,7 +48,6 @@ wss.on("connection", function connection(ws) {
                     if(!oof) current_alive.push(element.USERNAME);
                 }
             }); 
-            wss.broadcast(JSON.stringify({"TYPE": "USERS", "MESSAGE": current_alive}));
         } else 
         if(json.TYPE == "MESSAGE") {
             json.MESSAGE.replaceAll("<", "&lt").replaceAll(">", "&gt;").trim();
@@ -99,7 +104,3 @@ wss.broadcast = function broadcast(msg) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
-
-setInterval(function() {
-    console.log(current_alive);
-}, 1000);

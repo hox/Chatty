@@ -1,3 +1,4 @@
+<!-- Hi, don't steal my code, also i'm dead inside -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,8 +52,8 @@
                             <input autocomplete="false" id="signinFormPass" name="password" class="bg-dark form-control"
                                 type="password" placeholder="Password" />
                             <br>
-                            <input style="margin: 0 auto; display: flex; justify-content: center;" name="submitino" type="submit"
-                                class="btn btn-primary">
+                            <input style="margin: 0 auto; display: flex; justify-content: center;" name="submitino"
+                                type="submit" class="btn btn-primary">
                         </form>
                     </div>
                 </div>
@@ -72,8 +73,8 @@
                             <input autocomplete="false" id="signupformPass" name="password" class="bg-dark form-control"
                                 type="password" placeholder="Password" />
                             <br>
-                            <input style="margin: 0 auto; display: flex; justify-content: center;" name="submitino" type="submit"
-                                class="btn btn-primary">
+                            <input style="margin: 0 auto; display: flex; justify-content: center;" name="submitino"
+                                type="submit" class="btn btn-primary">
                         </form>
                     </div>
                 </div>
@@ -84,31 +85,56 @@
     </div>
     <!-- !/ Modals -->
 
-    <!-- ! Container -->
-    <div class="container" style="height: 100%">
-        <div class="row">
-            <!-- ? SIDEBAR -->
-            <div class="col-md-3">
-                <div id="sidebar" class="bg-dark" style="background-color: #23272A;overflow: hidden; overflow-y: auto; overflow-anchor: auto;">
-                    <div id="usersArea"></div>
+    <!-- ! Container
+    <div class="row">
+        <div class="col-md-2">
+            <div id="sidebar" class="bg-dark">
+                <div id="usersArea"></div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div id="messagesBox">
+                <div id="messages" class="bg-dark" style="overflow: hidden; overflow-y: auto; overflow-anchor: auto;">
                 </div>
             </div>
-            <!-- ?/ SIDEBAR -->
-            <!-- ? CHAT -->
-            <div class="col-md-8">
-                <div id="ooga">
-                    <div id="messages" class="bg-dark" style="overflow: hidden; overflow-y: auto; overflow-anchor: auto;">
-                    </div>
-                </div>
-                <div id="text">
-                    <input autocomplete="false" name="message" id="messageId" class="bg-dark form-control" type="text"
-                        placeholder="Send message to chat..." onchange="sendMessage()">
-                </div>
+            <div id="textBox">
+                <input autocomplete="false" name="message" id="messageId" class="bg-dark form-control" type="text"
+                    placeholder="Send message to chat..." onchange="sendMessage()">
             </div>
-            <!-- ?/ CHAT -->
         </div>
     </div>
-    <!-- !/ Container -->
+     !/ Container -->
+
+
+    <!-- ! Content -->
+    <div id="main" class="container">
+        <section class="main-content columns is-fullheight">
+            <aside class="column is-2 is-narrow-mobile is-fullheight section is-hidden-mobile">
+                <p class="menu-label is-hidden-touch">Pages</p>
+                <ul class="menu-list">
+                    <li><a href="#" class="is-active">Home</a></li>
+                    <li><a href="./faq.html">Discord</a></li>
+                </ul>
+                <p class="menu-label is-hidden-touch">Currently online</p>
+                <ul class="menu-list" id="usersonline">
+                    <li><a>Luke</a></li>
+                    <li><a>Ceaser</a></li>
+                </ul>
+            </aside>
+            <div class="container column is-10">
+                <div class="section">
+                    <div id="messages">
+                        <p><span class="username">Username</span><span class="message">Message to bobby jeff brown</span></p>
+                    </div>
+                    <div id="messageBox">
+                        <form></form>
+                        <input autocomplete="false" name="message" id="messageId" class="bg-dark form-control" type="text" placeholder="Send message to chat..." onchange="sendMessage()"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- ! ./Content -->
     <script>//$('#oof').click();</script>
 </body>
 

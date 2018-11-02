@@ -1,5 +1,4 @@
-@import "bootstrap.css";
-@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+@import "bulma.min.css";
 * {
   margin: 0;
   padding: 0;
@@ -9,28 +8,24 @@ html {
 }
 html,
 body {
-  background-color: #23272A !important;
-  font-family: 'Varela Round', sans-serif;
-  color: #eeeeee;
-  height: 100%;
+  height: 100% !important;
   width: 100%;
 }
 #messages {
   font-size: 20px !important;
-  padding-top: 15px;
-  padding-left: 15px;
-  height: 90%;
+  position: absolute !important;
+  height: 90% !important;
   border: none;
 }
 #messages p {
   margin-top: -20px;
 }
-/*.username::before {
-    content: '<';
-}*/
 .username::after {
-  color: #ccc !important;
-  content: ' »';
+  content: ' » ';
+}
+.message {
+  background-color: transparent !important;
+  border-radius: 0px !important;
 }
 #text {
   padding-right: 10px;
@@ -56,4 +51,8 @@ input {
 }
 #content {
   margin-top: 25px;
+}
+#sidebar {
+  overflow: hidden;
+  overflow-y: auto;
 }

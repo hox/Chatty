@@ -9,10 +9,6 @@ function signinFormSubmit() {
     setTimeout(function() {}, 3000);
 }
 
-setInterval( function() {
-    wss.send(JSON.stringify({"TYPE": "UPDATE", "TOKEN": token}));
-}, 10000);
-
 function signupFormSubmit() {
     var username = document.getElementById("signupformUser").value;
     var password = document.getElementById("signupformPass").value;
@@ -28,6 +24,7 @@ function sendMessage() {
 }
 
 wss.addEventListener("message", function(message) {
+    return false;
     var data = JSON.parse(message.data);
     if(data.TYPE == "MESSAGE") {
         document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
@@ -52,6 +49,9 @@ wss.addEventListener("message", function(message) {
         }
     } else
     if(data.TYPE == "USERS") {
-        document.getElementById("usersArea").innerText = data.MESSAGE.join("<br>");
+        document.getElementById("usersonline").innerText = data.MESSAGE.join("<br>");
+    } else
+    if(data.TYPE == "PING") {
+        wss.send(JSON.stringify({"TYPE": "UPDATE", "TOKEN": token}));
     }
 });
