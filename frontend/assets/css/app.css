@@ -12,16 +12,24 @@ body {
   width: 100%;
 }
 #messages {
+  vertical-align: top;
   font-size: 20px !important;
-  position: absolute !important;
-  height: 90% !important;
+  position: relative !important;
+  height: 80vh !important;
   border: none;
 }
 #messages p {
   margin-top: -20px;
 }
+#messageId {
+  vertical-align: bottom;
+}
+/*#messages span {
+   position: relative;
+}*/
 .username::after {
   content: ' » ';
+  color: #48d4ff;
 }
 .message {
   background-color: transparent !important;

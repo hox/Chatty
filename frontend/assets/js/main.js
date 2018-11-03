@@ -24,7 +24,6 @@ function sendMessage() {
 }
 
 wss.addEventListener("message", function(message) {
-    return false;
     var data = JSON.parse(message.data);
     if(data.TYPE == "MESSAGE") {
         document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
@@ -37,7 +36,7 @@ wss.addEventListener("message", function(message) {
             window.location.href = "./userdata_invalid.html"
         } else {
             token = data.MESSAGE;
-            $('#exampleModalCenter').modal('hide');
+            //$('#exampleModalCenter').modal('hide');
         }
     } else
     if(data.TYPE == "SIGNUP") {
@@ -45,7 +44,7 @@ wss.addEventListener("message", function(message) {
             window.location.href = "./username_taken.html"
         } else {
             token = data.MESSAGE;
-            $('#signup').modal('hide');
+            //$('#signup').modal('hide');
         }
     } else
     if(data.TYPE == "USERS") {

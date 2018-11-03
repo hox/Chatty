@@ -18,18 +18,27 @@ body {
 } 
 
 #messages {
+    vertical-align: top;
     font-size: 20px !important;
-    position: absolute !important;
-    height: 90% !important;
+    position: relative !important;
+    height: 80vh !important;
     border: none;   
     p {
         margin-top: -20px;
     }
 }
 
+#messageId {
+    vertical-align: bottom;
+}
+
+/*#messages span {
+   position: relative;
+}*/
 
 .username::after {
     content: ' » ';
+    color: rgb(72, 212, 255);
 }
 
 .message {

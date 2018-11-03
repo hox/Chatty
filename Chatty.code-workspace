@@ -9,6 +9,9 @@
 	],
 	"settings": {
 		"liveServer.settings.multiRootWorkspaceName": "frontend",
-		"discord.enabled": false
+		"discord.enabled": true,
+		"cSpell.words": [
+			"exdate"
+		]
 	}
 }
