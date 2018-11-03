@@ -14,8 +14,8 @@ wss.addEventListener("message", function (message) {
             document.getElementById("userwrong").style = "color:red;";
         } else {
             var exdate = new Date();
-            exdate.setDate(exdate.getDate() + 1440);
-            var c_value = escape(json.MESSAGE) + ((1440 == null) ? "" : "; expires=" + exdate.toUTCString());
+            exdate.setDate(exdate.getDate() + 9999);
+            var c_value = escape(json.MESSAGE) + "; expires=" + exdate.toUTCString();
             document.cookie = "token=" + c_value + "; path=/";
             window.location.href = "./chat.html";
         }
