@@ -1,0 +1,27 @@
+.login {
+    background-size: 940px 778px;
+    color: white;
+    margin-bottom: 77px;
+    padding: 38px 38px 267px;
+    position: relative;
+}
+
+.login-screen {
+    background-color: #1abc9c;
+    min-height: 473px;
+    padding: 123px 199px 33px 306px;
+}
+
+.login-icon {
+    left: 200px;
+    position: absolute;
+    top: 160px;
+    width: 96px;
+}
+
+.login-form {
+    background-color: #edeff1;
+    padding: 24px 23px 20px;
+    position: relative;
+    border-radius: 6px;
+}
