@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chatty - Login</title>
+    <link rel="stylesheet" href="./assets/css/bulma.min.css">
+    <link rel="stylesheet" href="./assets/css/login.css">
+    <script src="./assets/js/login.js"></script>
+</head>
+
+<body class="level">
+    <div class="level-item">
+        <div class="level" id="dialog">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Signin
+                    </p>
+                </header>
+                <div class="card-content">
+                    <p id="userwrong" class="notification is-danger" style="display: none;">You have entered in the
+                        wrong username / password! Please try again!</p>
+                    <form onSubmit="loginSubmit(); return false;">
+                        <label for="username">Username</label>
+                        <input class="input" type="text" placeholder="Username" id="usernamekey" autocomplete="on">
+
+                        <label for="password">Password</label>
+                        <input class="input" type="password" placeholder="Password" id="passwordkey" autocomplete="on">
+
+                        <input class="button is-primary" type="submit">
+                    </form>
+                </div>
+                <footer class="card-footer">
+                    <p class="help">Dont have an account? <a href="./signup.html">Click Here</a> to get one!</p>
+                    <p class="cookies">This site uses cookies to improve overall user experience.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
