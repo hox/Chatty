@@ -7,6 +7,8 @@ body {
  * LOGIN & SIGNUP
  */
 
+/*#region*/
+
 .login {
     background-color: #34495e;
     margin: 0 auto;
@@ -32,10 +34,13 @@ body {
 .login-link:hover {
     color: #e74c3c !important;
 }
+/*#endregion*/
 
 /*
  * CHAT
  */
+
+/*#region*/
 
 .chat {
     background-color: #34495E;
@@ -48,6 +53,14 @@ body {
     background-color: #2C3E50;
     position: fixed;
     height: 100%;
+}
+.chat.side .channel, .chat.side #users {
+    margin-left: 19px;
+}
+
+.chat.side #channel:before {
+    content: 'Channel:';
+    margin-right: 3px;
 }
 
 .chat.side .banner {
@@ -108,3 +121,5 @@ body {
         margin-left: 0;
     }
 }
+
+/*#endregion*/

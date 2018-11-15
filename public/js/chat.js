@@ -31,6 +31,15 @@ function tokenGet() {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+function sendMsg() {
+    var message = document.getElementById("messageKey").value;
+    
+    // code to send message
+
+    document.getElementById("messageKey").value = null;
+}
+
+//#region 
 /*var wss = new WebSocket("ws://127.0.0.1");
 
 
@@ -80,3 +89,5 @@ wss.addEventListener("message", function (message) {
     }
 });
 */
+
+//#endregion
