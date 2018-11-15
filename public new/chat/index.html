@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chatty | Chat</title>
+
+    <link rel="stylesheet" href="../css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/flat-ui.min.css">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+
+<body class="chat">
+    <div class="chat side">
+        <div class="banner">
+            <p>Chatty</p>
+        </div>
+        <div id="channel"></div>
+        <div id="users"></div>
+    </div>
+    <div class="chat content">
+
+        <div class="chat box">
+            <form onSubmit="sendMsg(); return false;">
+                <div class="form-group">
+                    <input data-lpignore=true type="text" class="form-control message-field" value="" placeholder="Send a message to chat.."
+                        id="messageKey" autocomplete="off">
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/chat.js"></script>
+</body>
+
+</html>

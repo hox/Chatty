@@ -1,22 +1,16 @@
+body {
+    background-color: #34495e;
+}
+
+/*
+ * LOGIN & SIGNUP
+ */
+
 .login {
-    background-size: 940px 778px;
-    color: white;
-    margin-bottom: 77px;
-    padding: 38px 38px 267px;
-    position: relative;
-}
-
-.login-screen {
-    background-color: #1abc9c;
-    min-height: 473px;
-    padding: 123px 199px 33px 306px;
-}
-
-.login-icon {
-    left: 200px;
-    position: absolute;
-    top: 160px;
-    width: 96px;
+    background-color: #34495e;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
 }
 
 .login-form {
@@ -24,4 +18,76 @@
     padding: 24px 23px 20px;
     position: relative;
     border-radius: 6px;
+}
+
+.login-form .login-field:focus {
+    border-color: #e74c3c !important;
+}
+
+.login-form .login-field:focus+.login-field-icon {
+    color: #e74c3c !important;
+}
+
+.login-link:hover {
+    color: #e74c3c !important;
+}
+
+/*
+ * CHAT
+ */
+
+.chat {
+    background-color: #34495E;
+}
+
+.chat.side {
+    margin: 0;
+    padding: 0;
+    width: 250px;
+    background-color: #2C3E50;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.chat.side .banner {
+    background-color: #e74c3c;
+    text-align: center;
+    color: #edeff1;
+    font-size: 18px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.chat.box {
+    margin: 0;
+    padding: 0;
+    background-color: #2C3E50;
+    width: calc(100% - 250px);
+    padding-left: 10px;
+    padding-right: 10px;
+    position: absolute;
+    left: 249px;
+    bottom: 0px;
+}
+
+.chat.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+    height: 90%;
+}
+
+@media screen and (max-width: 700px) {
+    .chat.side {
+        width: 100%;
+        height: auto;
+        position: relative;
+        display: none;
+    }
+
+    .chat.content {
+        margin-left: 0;
+    }
 }
