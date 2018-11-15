@@ -10,28 +10,12 @@ let db = new sqlite3.Database('./data/users.db');
 
 db.run(`CREATE TABLE IF NOT EXISTS Users(USERNAME text, PASSWORD text, ADMIN text, TOKEN text)`);
 
-/* ! REDESIGN
-
-var lukeserverapp = express();
-var lukeserverhttp = require('http').Server(lukeserverapp);
-lukeserverapp.use(express.static(__dirname + '/public new'));
-
-lukeserverapp.get('/', function (req, res) {
-    res.sendFile(__dirname + "/public new/index.html")
-})
-
-lukeserverhttp.listen(81, function () {
-    console.log("luke's http server now listening to port 81");
-});
-
-*/
-
 const PORT = 80;
 
-app.use(express.static(__dirname + '/public new'));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/public new/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 http.listen(PORT, function () {
