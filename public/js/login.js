@@ -30,7 +30,6 @@ socket.on('MESSAGE', function (msg) {
         if (json.MESSAGE == "USERDATA_INVALID") {
             document.getElementById("userwrong").style = "";
         } else {
-            console.log(json.MESSAGE)
             var exdate = new Date();
             exdate.setDate(exdate.getDate() + 1440);
             var c_value = escape(json.MESSAGE) + ((1440 == null) ? "" : "; expires=" + exdate.toUTCString());

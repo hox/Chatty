@@ -1,23 +1,61 @@
 var token;
 var channel = "main";
 var socket = io();
-
+var prevmsg = false;
 if (tokenGet() != null) {
     token = tokenGet();
 } else {
     window.location = "../";
 }
 
-socket.on("CONNECT", function (msg) {
+socket.on("connect", function () {
+    /*socket.emit("MESSAGE", JSON.stringify({
+        "TYPE": "CHECKTOKEN",
+        "MESSAGE": token
+    }))
+    setTimeout(function () {}, 3000);*/
     socket.emit("MESSAGE", JSON.stringify({
         "TYPE": "MESSAGES",
         "CHANNEL": channel
     }));
-    console.log("ok");
 })
 
 socket.on("MESSAGE", function (msg) {
-    var json = JSON.parse(msg);
+    var data = JSON.parse(msg);
+    if (data.TYPE == "MESSAGE") {
+        document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
+        var scroller = document.getElementById('messages');
+        scroller.scrollTop = scroller.scrollHeight;
+        return;
+    }
+    if (data.TYPE == "USERS") {
+        data.MESSAGE.forEach(function (username) {
+            document.getElementById("usersonline").innerHTML += "<li><a>" + username + "</a></li>";
+        });
+    }
+    if (data.TYPE == "PING") {
+        socket.emit("MESSAGE", JSON.stringify({
+            "TYPE": "UPDATE",
+            "TOKEN": token
+        }));
+    }
+    if (data.TYPE == "MESSAGES") {
+        if (prevmsg) return;
+        data.MESSAGE.forEach(function (message) {
+            document.getElementById("messages").innerHTML += "<p><span class='username'>" + message.username + "</span> <span class='message'>" + message.message + "</span></p>";
+            var scroller = document.getElementById('messages');
+            scroller.scrollTop = scroller.scrollHeight;
+            prevmsg = true;
+            return;
+        });
+    }
+    if (data.TYPE == "CHECKTOKEN") {
+        if (data.MESSAGE == "OK") {
+            return;
+        } else {
+            document.cookie = "token=" + ";path=/" + ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+        }
+    }
 })
 
 function tokenGet() {
@@ -33,61 +71,13 @@ function tokenGet() {
 
 function sendMsg() {
     var message = document.getElementById("messageKey").value;
-    
-    // code to send message
+
+    socket.emit("MESSAGE", JSON.stringify({
+        "TYPE": "MESSAGE",
+        "MESSAGE": message,
+        "TOKEN": token,
+        "CHANNEL": channel
+    }));
 
     document.getElementById("messageKey").value = null;
 }
-
-//#region 
-/*var wss = new WebSocket("ws://127.0.0.1");
-
-
-
-wss.addEventListener("open", function () {
-    
-});
-
-function sendMessage() {
-    var message = document.getElementById("messageId").value;
-    wss.send(JSON.stringify({
-        "TYPE": "MESSAGE",
-        "TOKEN": token,
-        "MESSAGE": message,
-        "CHANNEL": channel
-    }))
-    document.getElementById("messageId").value = null;
-}
-
-wss.addEventListener("message", function (message) {
-    var data = JSON.parse(message.data);
-    if (data.TYPE == "MESSAGE") {
-        console.log(data.USERNAME + " | " + data.MESSAGE);
-        document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
-        var scroller = document.getElementById('messages');
-        scroller.scrollTop = scroller.scrollHeight;
-        return;
-    }
-    if (data.TYPE == "USERS") {
-        data.MESSAGE.forEach(function (username) {
-            document.getElementById("usersonline").innerHTML += "<li><a>" + username + "</a></li>";
-        });
-    }
-    if (data.TYPE == "PING") {
-        wss.send(JSON.stringify({
-            "TYPE": "UPDATE",
-            "TOKEN": token
-        }));
-    }
-    if (data.TYPE == "MESSAGES") {
-        data.MESSAGE.forEach(function (message) {
-            document.getElementById("messages").innerHTML += "<p><span class='username'>" + message.username + "</span> <span class='message'>" + message.message + "</span></p>";
-            var scroller = document.getElementById('messages');
-            scroller.scrollTop = scroller.scrollHeight;
-            return;
-        });
-    }
-});
-*/
-
-//#endregion

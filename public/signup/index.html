@@ -14,7 +14,10 @@
 </head>
 
 <body class="login">
-    <form class="login-form">
+    <form class="login-form" onsubmit="signupSubmit(); return false;">
+        <div class="alert alert-danger" id="userwrong" style="display:none">
+            This username has already been taken!
+        </div>
         <div class="form-group">
             <input data-lpignore=true type="text" class="form-control login-field" value="" placeholder="Enter your name"
                 id="usernamekey" autocomplete="off">
