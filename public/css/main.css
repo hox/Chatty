@@ -34,6 +34,7 @@ body {
 .login-link:hover {
     color: #e74c3c !important;
 }
+
 /*#endregion*/
 
 /*
@@ -42,11 +43,38 @@ body {
 
 /*#region*/
 
+html,
 .chat {
-    background-color: #34495E;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
-.chat.side {
+.chat-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-left: 250px;
+    height: 90%;
+    width: 100%;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+    padding: 1px 16px;
+}
+
+.chat-box {
+    flex: none;
+}
+
+.chat-side {
     margin: 0;
     padding: 0;
     width: 250px;
@@ -54,16 +82,18 @@ body {
     position: fixed;
     height: 100%;
 }
-.chat.side .channel, .chat.side #users {
+
+.chat-side .channel,
+.chat-side #users {
     margin-left: 19px;
 }
 
-.chat.side #channel:before {
+.chat-side #channel:before {
     content: 'Channel:';
     margin-right: 3px;
 }
 
-.chat.side .banner {
+.chat-side .banner {
     background-color: #e74c3c;
     text-align: center;
     color: #edeff1;
@@ -77,23 +107,22 @@ body {
 .username {
     margin-right: 3px;
 }
+
 .username:after {
     content: ':'
 }
 
-.chat.box {
+.chat-box {
     margin: 0;
     padding: 0;
     background-color: #2C3E50;
     width: calc(100% - 250px);
     color: #fff;
-    position: absolute;
-    left: 249px;
-    bottom: 0px;
     padding-bottom: 0;
+    position: relative;
 }
 
-.chat.box input {
+.chat-box input {
     background-color: transparent !important;
     font-size: 18px;
     color: #fff;
@@ -102,24 +131,24 @@ body {
     font-size: 20px;
 }
 
-.chat.content {
-    margin-left: 250px;
-    padding: 1px 16px;
-    height: 90%;
-}
-
 @media screen and (max-width: 800px) {
-    .chat.side {
+    .chat-side {
         display: none;
     }
 
-    .chat.content {
+    .chat-content {
         margin-left: 0;
     }
-    .chat.box {
+
+    .chat-box {
         width: 100%;
         margin-left: 0;
     }
 }
+
+p {
+    margin-bottom: 1px;
+}
+
 
 /*#endregion*/

@@ -13,7 +13,7 @@ function token() {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
-function loginSubmit() {
+function signupSubmit() {
     var usernamekey = document.getElementById("usernamekey").value;
     var passwordkey = document.getElementById("passwordkey").value;
     socket.emit('MESSAGE', JSON.stringify({
@@ -30,12 +30,11 @@ socket.on('MESSAGE', function (msg) {
         if (json.MESSAGE == "USERNAME_TAKEN") {
             document.getElementById("userwrong").style = "";
         } else {
-            console.log(json.MESSAGE)
             var exdate = new Date();
             exdate.setDate(exdate.getDate() + 1440);
             var c_value = escape(json.MESSAGE) + ((1440 == null) ? "" : "; expires=" + exdate.toUTCString());
             document.cookie = "token=" + c_value + "; path=/";
-            window.location.href = "./chat/";
+            window.location.href = "../chat/";
         }
     }
 });
