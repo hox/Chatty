@@ -3,6 +3,18 @@ var fs = require('fs');
 var express = require('express');
 var app = express();
 var rtg = require('random-token-generator');
+
+// ! HTTP ROUTING
+var httpApp = express();
+var http = require('http').createServer(httpApp);
+http.listen(80, function () {
+    console.log("Routing all traffic on port 80 (http) to 443 (https)");
+});
+http.get('*', function (req, res) {
+    res.redirect('https://' + req.headers.host + req.url);
+});
+// ! HTTP ROUTING
+
 var https = require('https');
 var privateKey = fs.readFileSync('./data/key.pem', 'utf8');
 var certificate = fs.readFileSync('./data/cert.pem', 'utf8');
