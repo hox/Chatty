@@ -5,11 +5,7 @@ var app = express();
 var rtg = require('random-token-generator');
 
 // ! HTTP ROUTING
-var httpApp = express();
-var http = require('http').createServer(httpApp);
-http.listen(80, function () {
-    console.log("Routing all traffic on port 80 (http) to 443 (https)");
-});
+var http = express();
 http.get('*', function (req, res) {
     res.redirect('https://' + req.headers.host + req.url);
 });
