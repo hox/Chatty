@@ -1,5 +1,5 @@
 body {
-    background-color: #34495e;
+    background-color: #2C3A47;
     color: #fff;
 }
 
@@ -43,14 +43,17 @@ body {
 
 /*#region*/
 
-html,
+.chat-box .form-group {
+    margin: 0 !important;
+}
+
 .chat {
     display: flex;
     flex-direction: column;
     flex: 1;
     min-height: 100vh;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .chat-content {
@@ -78,23 +81,27 @@ html,
     margin: 0;
     padding: 0;
     width: 250px;
-    background-color: #2C3E50;
+    background-color: #1e272e;
     position: fixed;
     height: 100%;
+    text-align: center;
 }
 
-.chat-side .channel,
 .chat-side #users {
     margin-left: 19px;
 }
 
+.chat-side .channel {
+    text-align: center;
+}
+
 .chat-side #channel:before {
-    content: 'Channel:';
-    margin-right: 3px;
+
+    content: 'Connected to #';
 }
 
 .chat-side .banner {
-    background-color: #e74c3c;
+    background-color: #2980B9;
     text-align: center;
     color: #edeff1;
     font-size: 18px;
@@ -115,11 +122,13 @@ html,
 .chat-box {
     margin: 0;
     padding: 0;
-    background-color: #2C3E50;
+    background-color: #1e272e;
     width: calc(100% - 250px);
     color: #fff;
     padding-bottom: 0;
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 .chat-box input {
