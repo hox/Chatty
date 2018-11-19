@@ -88,6 +88,7 @@ io.on('connection', function (socket) {
         }
         if (json.TYPE == "MESSAGE") {
             var newmessage = json.MESSAGE.replaceAll("<", "&lt").replaceAll(">", "&gt;").trim();
+            if (!checkMsg(newmessage)) return;
             refreshDb();
             db.all(`SELECT * from Users`, [], function (err, rows) {
                 if (err) {
@@ -249,4 +250,8 @@ async function startMessageFlow() {
 function refreshDb() {
     db.close();
     db = new sqlite3.Database('./data/users.db');
+}
+
+function checkMsg(msg) {
+    return true;
 }

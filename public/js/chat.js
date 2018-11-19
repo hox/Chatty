@@ -2,7 +2,8 @@ var token;
 var channel = "main";
 var socket = io();
 var prevmsg = false;
-if (tokenGet() != null) {
+
+if (tokenGet() != null || tokenGet() != "undefined") {
     token = tokenGet();
 } else {
     window.location = "../";

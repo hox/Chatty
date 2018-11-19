@@ -1,7 +1,30 @@
-body {
+body,
+html {
     background-color: #2C3A47;
     color: #fff;
 }
+
+html {
+    scroll-behavior: smooth;
+}
+
+/*
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}*/
 
 /*
  * LOGIN & SIGNUP
@@ -101,9 +124,9 @@ body {
 }
 
 .chat-side .banner {
-    background-color: #2980B9;
+    background-color: #2980B9 !important;
     text-align: center;
-    color: #edeff1;
+    color: #edeff1 !important;
     font-size: 18px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -122,7 +145,7 @@ body {
 .chat-box {
     margin: 0;
     padding: 0;
-    background-color: #1e272e;
+    background-color: #1e272e !important;
     width: calc(100% - 250px);
     color: #fff;
     padding-bottom: 0;
