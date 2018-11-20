@@ -104,11 +104,13 @@ io.on('connection', function (socket) {
                 }
                 rows.forEach(function (element) {
                     if (element.TOKEN == json.TOKEN) {
+                        var admin = element.ADMIN == 'true';
                         io.emit("MESSAGE", JSON.stringify({
                             "TYPE": "MESSAGE",
                             "USERNAME": element.USERNAME,
                             "MESSAGE": newmessage,
-                            "CHANNEL": json.CHANNEL
+                            "CHANNEL": json.CHANNEL,
+                            "ADMIN": admin
                         }));
                         writeMessage(element.USERNAME, json.MESSAGE, json.CHANNEL);
                     }
@@ -162,7 +164,7 @@ io.on('connection', function (socket) {
                 }, function (err, key) {
                     if (done) return;
                     console.log("inserting into", json.USERNAME)
-                    db.run(`insert into Users values('${json.USERNAME}', '${SHA256(json.PASSWORD)}', false, '${key}')`);
+                    db.run(`insert into Users values('${json.USERNAME}', '${SHA256(json.PASSWORD)}', 'false', '${key}')`);
                     socket.emit("MESSAGE", JSON.stringify({
                         "TYPE": "SIGNUP",
                         "MESSAGE": key

@@ -24,7 +24,11 @@ socket.on("connect", function () {
 socket.on("MESSAGE", function (msg) {
     var data = JSON.parse(msg);
     if (data.TYPE == "MESSAGE") {
-        document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
+        if (data.ADMIN) {
+            document.getElementById("messages").innerHTML += "<p><span class='username'>⚒ " + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
+        } else {
+            document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
+        }
         var scroller = document.getElementById('messages');
         scroller.scrollTop = scroller.scrollHeight;
         return;
