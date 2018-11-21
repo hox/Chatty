@@ -10,11 +10,11 @@ if (tokenGet() != null || tokenGet() != "undefined") {
 }
 
 socket.on("connect", function () {
-    /*socket.emit("MESSAGE", JSON.stringify({
-        "TYPE": "CHECKTOKEN",
-        "MESSAGE": token
+    socket.emit("MESSAGE", JSON.stringify({
+        "TYPE": "UPDATE",
+        "TOKEN": token
     }))
-    setTimeout(function () {}, 3000);*/
+    setTimeout(function () {}, 3000);
     socket.emit("MESSAGE", JSON.stringify({
         "TYPE": "MESSAGES",
         "CHANNEL": channel
@@ -24,42 +24,27 @@ socket.on("connect", function () {
 socket.on("MESSAGE", function (msg) {
     var data = JSON.parse(msg);
     if (data.TYPE == "MESSAGE") {
-        if (data.ADMIN) {
-            document.getElementById("messages").innerHTML += "<p><span class='username'>⚒ " + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
-        } else {
-            document.getElementById("messages").innerHTML += "<p><span class='username'>" + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
-        }
+        document.getElementById("messages").innerHTML += "<p><span class='username'>" + ((data.ADMIN) ? "⚒ " : "") + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
         var scroller = document.getElementById('messages');
         scroller.scrollTop = scroller.scrollHeight;
         return;
     }
     if (data.TYPE == "USERS") {
+        if (data.MESSAGE.length == 0) return;
+        document.getElementById("users").innerHTML = null;
         data.MESSAGE.forEach(function (username) {
-            document.getElementById("usersonline").innerHTML += "<li><a>" + username + "</a></li>";
+            document.getElementById("users").innerHTML += "<li><a>" + username + "</a></li>";
         });
-    }
-    if (data.TYPE == "PING") {
-        socket.emit("MESSAGE", JSON.stringify({
-            "TYPE": "UPDATE",
-            "TOKEN": token
-        }));
     }
     if (data.TYPE == "MESSAGES") {
         if (prevmsg) return;
         data.MESSAGE.forEach(function (message) {
-            document.getElementById("messages").innerHTML += "<p><span class='username'>" + message.username + "</span> <span class='message'>" + message.message + "</span></p>";
+            document.getElementById("messages").innerHTML += "<p><span class='username'>" + ((message.admin) ? "⚒ " : "") + message.username + "</span> <span class='message'>" + message.message + "</span></p>";
             var scroller = document.getElementById('messages');
             scroller.scrollTop = scroller.scrollHeight;
             prevmsg = true;
             return;
         });
-    }
-    if (data.TYPE == "CHECKTOKEN") {
-        if (data.MESSAGE == "OK") {
-            return;
-        } else {
-            document.cookie = "token=" + ";path=/" + ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
-        }
     }
 })
 

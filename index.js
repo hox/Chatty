@@ -1,4 +1,4 @@
-//! hit or miss, i guess they never miss, huh?
+// ! hit or miss, i guess they never miss, huh?
 var fs = require('fs');
 var express = require('express');
 var app = express();
@@ -50,7 +50,36 @@ setInterval(function () {
     }));
 }, 10000);
 
+var admins = [];
+
+db.all(`SELECT * from Users`, [], function (err, rows) {
+    if (err) {
+        throw err;
+    }
+    rows.forEach(function (element) {
+        if (element.ADMIN == "true")
+            admins.push(element.USERNAME);
+    });
+});
+
+var connected = [];
+
 io.on('connection', function (socket) {
+    var token = "";
+    var sockid = socket.id;
+
+    socket.on("disconnect", function () {
+        var newary = connected;
+        for (i = 0; i < newary.length; i++) {
+            var obj = newary[i];
+            if (obj.token == token) {
+                newary[i] = null;
+            }
+        }
+        newary = connected;
+        updateUsers();
+    });
+
     socket.on('MESSAGE', function (msg) {
         var json = {};
         try {
@@ -61,16 +90,20 @@ io.on('connection', function (socket) {
         }
         if (json.TYPE == "UPDATE") {
             if (json.TOKEN == "") return;
-            db.all(`SELECT * from Users`, [], (err, rows) => {
-                if (err) {
-                    throw err;
+            for (i = 0; i < connected.length; i++) {
+                var obj = connected[i];
+                if (obj.token == json.TOKEN) {
+                    connected[i] = null;
                 }
-                rows.forEach(function (element) {
-
-                });
+            }
+            connected.push({
+                "token": json.TOKEN,
+                "sockid": sockid
             });
+            updateUsers();
         }
-        if (json.TYPE == "CHECKTOKEN") {
+
+        /*if (json.TYPE == "CHECKTOKEN") {
             var goodToken = false;
             db.all(`SELECT * from Users`, [], function (err, rows) {
                 if (err) {
@@ -93,7 +126,7 @@ io.on('connection', function (socket) {
                     "MESSAGE": "INVALID"
                 }));
             }
-        }
+        }*/
         if (json.TYPE == "MESSAGE") {
             var newmessage = json.MESSAGE.replaceAll("<", "&lt").replaceAll(">", "&gt;").trim();
             if (!checkMsg(newmessage)) return;
@@ -176,12 +209,21 @@ io.on('connection', function (socket) {
             var channel = json.CHANNEL;
             if (channel == "") return;
             var msgarray = [];
-            /*fs.readdir("./data/logs/", function (err, filename) {
+            fs.readdir("./data/logs/", function (err, filename) {
                 if (filename == channel + ".json") {
                     fs.readFile("./data/logs/" + filename, "utf8", function (err, data) {
                         var json = JSON.parse(data);
                         for (i = 0; i < 10; i++) {
-                            var message = json.logs[i];
+                            var admin = false;
+                            admins.forEach(function (username) {
+                                if (username == json.logs[i].username)
+                                    admin = true;
+                            });
+                            var message = {
+                                "username": json.logs[i].username,
+                                "message": json.logs[i].message,
+                                "admin": admin
+                            };
                             msgarray.unshift(message);
                         }
                         socket.emit("MESSAGE", JSON.stringify({
@@ -190,21 +232,6 @@ io.on('connection', function (socket) {
                         }));
                     });
                 }
-            });*/
-            fs.readFile("./data/logs/" + channel + ".txt", "utf-8", function (err, data) {
-                var lines = data.split("\n").reverse();
-                for (let i = 0; i < 10; i++) {
-                    var newary = lines[i].split(" >> ");
-                    var message = {
-                        "username": newary[0],
-                        "message": newary[1]
-                    };
-                    msgarray.unshift(message);
-                }
-                socket.emit("MESSAGE", JSON.stringify({
-                    "TYPE": "MESSAGES",
-                    "MESSAGE": msgarray
-                }));
             });
         }
     });
@@ -215,46 +242,22 @@ String.prototype.replaceAll = function (search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-var msgqueue = [];
-
 function writeMessage(username, message, channel) {
-    /*msgqueue.push({
-        "username": username,
-        "message": message,
-        "channel": channel
-    });*/
-    fs.appendFile("./data/logs/" + channel + ".txt", "\n" + username + " >> " + message, function () {});
-}
-
-//startMessageFlow(); TODO: GET MESSAGES WORKING
-async function startMessageFlow() {
-    console.log("flow started");
-    for (let i = 1; i < 2;) {
-        if (msgqueue.length > 0) {
-            console.log("check complete")
-            var obj = msgqueue[0];
-            var username = obj.username;
-            var message = obj.message;
-            var channel = obj.channel;
-            fs.readdir("./data/logs", function (err, files) {
-                files.forEach(function (logname) {
-                    if (logname == channel + ".json") {
-                        fs.readFile("./data/logs/" + logname, "utf8", function (err, data) {
-                            var json = JSON.parse(data);
-                            json.logs.unshift({
-                                "username": username,
-                                "message": message
-                            });
-                            console.log("Writing Messages");
-                            fs.writeFile("./data/logs/" + logname, JSON.stringify(json), function (callback) {});
-                        });
-                    }
+    fs.readdirSync("./data/logs", function (err, files) {
+        files.forEach(function (logname) {
+            if (logname == channel + ".json") {
+                fs.readFileSync("./data/logs/" + logname, "utf8", function (err, data) {
+                    var json = JSON.parse(data);
+                    json.logs.unshift({
+                        "username": username,
+                        "message": message
+                    });
+                    console.log("Writing Messages");
+                    fs.writeFileSync("./data/logs/" + logname, JSON.stringify(json));
                 });
-            });
-        } else {
-            continue;
-        }
-    }
+            }
+        });
+    });
 }
 
 function refreshDb() {
@@ -263,5 +266,34 @@ function refreshDb() {
 }
 
 function checkMsg(msg) {
+    var invalids = ["", " "];
+    for (i = 0; i < invalids.length; i++) {
+        if (msg == invalids[i])
+            return false;
+    }
     return true;
+}
+
+function updateUsers() {
+    for (var j = connected.length - 1; j >= 0; j--)
+        if (connected[j] === null)
+            connected.splice(j, 1);
+    var onlineusers = [];
+    db.all("select * from Users", [], function (err, rows) {
+        if (err) {
+            throw err;
+        }
+        rows.forEach(function (element) {
+            connected.forEach(function (obj) {
+                if (element.TOKEN == obj.token) {
+                    onlineusers.push(element.USERNAME);
+                }
+            });
+        });
+        if (onlineusers.length == 0) return;
+        io.emit("MESSAGE", JSON.stringify({
+            "TYPE": "USERS",
+            "MESSAGE": onlineusers
+        }));
+    });
 }
