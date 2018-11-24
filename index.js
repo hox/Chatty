@@ -38,18 +38,6 @@ httpsServer.listen(PORT, function () {
     console.log(`Now listening to * on port ${PORT}`);
 });
 
-setInterval(function () {
-    io.emit("MESSAGE", JSON.stringify({
-        "TYPE": "PING"
-    }));
-    current_alive = [];
-    setTimeout(function () {}, 3000);
-    io.emit("MESSAGE", JSON.stringify({
-        "TYPE": "USERS",
-        "MESSAGE": current_alive
-    }));
-}, 10000);
-
 var admins = [];
 
 db.all(`SELECT * from Users`, [], function (err, rows) {
@@ -65,21 +53,6 @@ db.all(`SELECT * from Users`, [], function (err, rows) {
 var connected = [];
 
 io.on('connection', function (socket) {
-    var token = "";
-    var sockid = socket.id;
-
-    socket.on("disconnect", function () {
-        var newary = connected;
-        for (i = 0; i < newary.length; i++) {
-            var obj = newary[i];
-            if (obj.token == token) {
-                newary[i] = null;
-            }
-        }
-        newary = connected;
-        updateUsers();
-    });
-
     socket.on('MESSAGE', function (msg) {
         var json = {};
         try {
@@ -88,19 +61,23 @@ io.on('connection', function (socket) {
             console.log(e);
             return;
         }
-        if (json.TYPE == "UPDATE") {
-            if (json.TOKEN == "") return;
-            for (i = 0; i < connected.length; i++) {
-                var obj = connected[i];
-                if (obj.token == json.TOKEN) {
-                    connected[i] = null;
+
+        if (json.TYPE == "SOCKIN") {
+            if (json.TOKEN != undefined) {
+                if (!connected.includes(json.TOKEN)) {
+                    connected.push(json.TOKEN);
+                    updateUsers();
                 }
             }
-            connected.push({
-                "token": json.TOKEN,
-                "sockid": sockid
-            });
-            updateUsers();
+        }
+
+        if (json.TYPE == "SOCKOUT") {
+            if (json.TOKEN != undefined) {
+                if (connected.includes(json.TOKEN)) {
+                    connected.splice(connected.indexOf(json.TOKEN));
+                    updateUsers();
+                }
+            }
         }
 
         /*if (json.TYPE == "CHECKTOKEN") {
@@ -196,7 +173,7 @@ io.on('connection', function (socket) {
                     retry: true
                 }, function (err, key) {
                     if (done) return;
-                    console.log("inserting into", json.USERNAME)
+
                     db.run(`insert into Users values('${json.USERNAME}', '${SHA256(json.PASSWORD)}', 'false', '${key}')`);
                     socket.emit("MESSAGE", JSON.stringify({
                         "TYPE": "SIGNUP",
@@ -243,20 +220,17 @@ String.prototype.replaceAll = function (search, replacement) {
 };
 
 function writeMessage(username, message, channel) {
-    fs.readdirSync("./data/logs", function (err, files) {
-        files.forEach(function (logname) {
-            if (logname == channel + ".json") {
-                fs.readFileSync("./data/logs/" + logname, "utf8", function (err, data) {
-                    var json = JSON.parse(data);
-                    json.logs.unshift({
-                        "username": username,
-                        "message": message
-                    });
-                    console.log("Writing Messages");
-                    fs.writeFileSync("./data/logs/" + logname, JSON.stringify(json));
-                });
-            }
-        });
+    if (!checkMsg(message)) return;
+    var files = fs.readdirSync("./data/logs", "utf8");
+    files.forEach(function (logname) {
+        if (logname == channel + ".json") {
+            var json = JSON.parse(fs.readFileSync("./data/logs/" + logname, "utf8"));
+            json.logs.unshift({
+                "username": username,
+                "message": message
+            });
+            fs.writeFileSync("./data/logs/" + logname, JSON.stringify(json));
+        }
     });
 }
 
@@ -275,22 +249,18 @@ function checkMsg(msg) {
 }
 
 function updateUsers() {
-    for (var j = connected.length - 1; j >= 0; j--)
-        if (connected[j] === null)
-            connected.splice(j, 1);
     var onlineusers = [];
     db.all("select * from Users", [], function (err, rows) {
         if (err) {
             throw err;
         }
         rows.forEach(function (element) {
-            connected.forEach(function (obj) {
-                if (element.TOKEN == obj.token) {
+            connected.forEach(function (token) {
+                if (element.TOKEN == token) {
                     onlineusers.push(element.USERNAME);
                 }
             });
         });
-        if (onlineusers.length == 0) return;
         io.emit("MESSAGE", JSON.stringify({
             "TYPE": "USERS",
             "MESSAGE": onlineusers

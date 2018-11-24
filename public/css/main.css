@@ -89,6 +89,17 @@ html {
     width: 100%;
 }
 
+.logout {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+}
+
+.administrator::before {
+    content: "⚒ ";
+    color: #2980B9;
+}
+
 .chat-messages {
     display: flex;
     flex-direction: column;
@@ -113,8 +124,8 @@ html {
     text-align: center;
 }
 
-.chat-side #users {
-    margin-left: 19px;
+.chat-side #users li {
+    list-style: none;
 }
 
 .chat-side .channel {
@@ -122,7 +133,6 @@ html {
 }
 
 .chat-side #channel:before {
-
     content: 'Connected to #';
 }
 
@@ -138,6 +148,7 @@ html {
 .chat-side .chat-container {
     margin-left: 20px;
     margin-right: 20px;
+    height: 100%;
 }
 
 .chat-side .chat-container a.btn {
@@ -149,7 +160,7 @@ html {
 }
 
 .username:after {
-    content: ':'
+    content: ' ≫'
 }
 
 .chat-box {
@@ -157,11 +168,16 @@ html {
     padding: 0;
     background-color: #1e272e !important;
     width: calc(100% - 250px);
-    color: #fff;
+    color: #fff !important;
     padding-bottom: 0;
     position: fixed;
     bottom: 0;
     width: 100%;
+    border: none !important;
+}
+
+.form-control:focus {
+    color: #fff;
 }
 
 .chat-box input {

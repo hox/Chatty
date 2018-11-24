@@ -13,19 +13,21 @@
     <link rel="stylesheet" href="../css/main.css">
 </head>
 
-<body class="chat">
+<body class="chat" onbeforeunload="leaveSocket();">
     <div class="chat-side">
         <div class="chat-container">
             <div class="banner">
                 <p>Chatty</p>
             </div>
-            <br>
+            <hr>
             <div class="channel">
                 <p id="channel">main</p>
             </div>
-            <br>
+            <hr>
             <div id="users"></div>
-            <a href="#fakelink" class="btn btn-block btn-lg btn-info">Logout</a>
+            <div class="logout">
+                <a class="fui-exit" href="javascript:logout()"></a>
+            </div>
         </div>
     </div>
     <div class="chat-content">
