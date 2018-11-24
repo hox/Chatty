@@ -12,8 +12,8 @@ http.get('*', function (req, res) {
 // ! HTTP ROUTING
 
 var https = require('https');
-var privateKey = fs.readFileSync('./data/key.pem', 'utf8');
-var certificate = fs.readFileSync('./data/cert.pem', 'utf8');
+var privateKey = fs.readFileSync('./../data/key.pem', 'utf8');
+var certificate = fs.readFileSync('./../data/cert.pem', 'utf8');
 var credentials = {
     key: privateKey,
     cert: certificate
@@ -22,7 +22,7 @@ var httpsServer = https.createServer(credentials, app);
 var io = require('socket.io').listen(httpsServer);
 var SHA256 = require('js-sha256').sha256;
 const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('./data/users.db');
+let db = new sqlite3.Database('./../data/users.db');
 
 db.run(`CREATE TABLE IF NOT EXISTS Users(USERNAME text, PASSWORD text, ADMIN text, TOKEN text)`);
 
@@ -221,22 +221,22 @@ String.prototype.replaceAll = function (search, replacement) {
 
 function writeMessage(username, message, channel) {
     if (!checkMsg(message)) return;
-    var files = fs.readdirSync("./data/logs", "utf8");
+    var files = fs.readdirSync("./../data/logs", "utf8");
     files.forEach(function (logname) {
         if (logname == channel + ".json") {
-            var json = JSON.parse(fs.readFileSync("./data/logs/" + logname, "utf8"));
+            var json = JSON.parse(fs.readFileSync("./../data/logs/" + logname, "utf8"));
             json.logs.unshift({
                 "username": username,
                 "message": message
             });
-            fs.writeFileSync("./data/logs/" + logname, JSON.stringify(json));
+            fs.writeFileSync("./../data/logs/" + logname, JSON.stringify(json));
         }
     });
 }
 
 function refreshDb() {
     db.close();
-    db = new sqlite3.Database('./data/users.db');
+    db = new sqlite3.Database('./../data/users.db');
 }
 
 function checkMsg(msg) {
