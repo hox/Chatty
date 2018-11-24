@@ -51,6 +51,24 @@ db.all(`SELECT * from Users`, [], function (err, rows) {
 });
 
 var connected = [];
+var timestamp = "";
+
+setInterval(function() {
+    var date = new Date();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = " AM";
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (hours < 10) {
+        hours = "0" + hours;
+    } else if (hours > 12) {
+        hours = hours % 12;
+        ampm = " PM";                        
+    }
+    timestamp = date.toDateString() + " @ " + hours + ":" + minutes + ampm;
+}, 1000);
 
 io.on('connection', function (socket) {
     socket.on('MESSAGE', function (msg) {
@@ -120,7 +138,8 @@ io.on('connection', function (socket) {
                             "USERNAME": element.USERNAME,
                             "MESSAGE": newmessage,
                             "CHANNEL": json.CHANNEL,
-                            "ADMIN": admin
+                            "ADMIN": admin,
+                            "TIMESTAMP": timestamp
                         }));
                         writeMessage(element.USERNAME, json.MESSAGE, json.CHANNEL);
                     }
@@ -183,12 +202,13 @@ io.on('connection', function (socket) {
             });
         }
         if (json.TYPE == "MESSAGES") {
+            refreshDb();
             var channel = json.CHANNEL;
             if (channel == "") return;
             var msgarray = [];
-            fs.readdir("./data/logs/", function (err, filename) {
+            fs.readdir("./../data/logs/", function (err, filename) {
                 if (filename == channel + ".json") {
-                    fs.readFile("./data/logs/" + filename, "utf8", function (err, data) {
+                    fs.readFile("./../data/logs/" + filename, "utf8", function (err, data) {
                         var json = JSON.parse(data);
                         for (i = 0; i < 10; i++) {
                             var admin = false;
@@ -199,7 +219,8 @@ io.on('connection', function (socket) {
                             var message = {
                                 "username": json.logs[i].username,
                                 "message": json.logs[i].message,
-                                "admin": admin
+                                "admin": admin,
+                                "timestamp": json.logs[i].timestamp
                             };
                             msgarray.unshift(message);
                         }
@@ -227,7 +248,8 @@ function writeMessage(username, message, channel) {
             var json = JSON.parse(fs.readFileSync("./../data/logs/" + logname, "utf8"));
             json.logs.unshift({
                 "username": username,
-                "message": message
+                "message": message,
+                "timestamp": timestamp
             });
             fs.writeFileSync("./../data/logs/" + logname, JSON.stringify(json));
         }

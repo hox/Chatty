@@ -28,11 +28,10 @@ socket.on('MESSAGE', function (msg) {
     var json = JSON.parse(msg);
     if (json.TYPE == "SIGNIN") {
         if (json.MESSAGE == "USERDATA_INVALID") {
+            setTimeout(function () {}, 1000);
             document.getElementById("userwrong").style = "";
         } else {
-            var exdate = new Date();
-            exdate.setDate(exdate.getDate() + 1440);
-            var c_value = escape(json.MESSAGE) + ((1440 == null) ? "" : "; expires=" + exdate.toUTCString());
+            var c_value = escape(json.MESSAGE) + "; 0";
             document.cookie = "token=" + c_value + "; path=/";
             window.location.href = "./chat/";
         }

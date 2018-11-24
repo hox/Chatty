@@ -30,9 +30,22 @@ socket.on("connect", function () {
 socket.on("MESSAGE", function (msg) {
     var data = JSON.parse(msg);
     if (data.TYPE == "MESSAGE") {
-        document.getElementById("messages").innerHTML += "<p><span class='username" + ((data.ADMIN) ? " administrator'>" : "'>") + data.USERNAME + "</span> <span class='message'>" + data.MESSAGE + "</span></p>";
-        var scroller = document.getElementById('messages');
-        scroller.scrollTop = scroller.scrollHeight;
+        var div = document.getElementById("messages");
+        var p = document.createElement("p");
+        var time = document.createElement("p");
+        var username = document.createElement("span");
+        var messageTxt = document.createElement("span");
+        username.appendChild(document.createTextNode(data.USERNAME));
+        username.setAttribute("class", "username" + ((data.ADMIN) ? " administrator" : "" + "'>")); 
+        messageTxt.appendChild(document.createTextNode(data.MESSAGE));
+        messageTxt.setAttribute("class", "message");
+        p.appendChild(username);
+        p.appendChild(messageTxt);
+        p.setAttribute("class", "chat-message");
+        time.appendChild(document.createTextNode(data.TIMESTAMP)); // timestamp goes here
+        time.setAttribute("id", "timestamp");
+        p.appendChild(time);
+        div.appendChild(p);
         return;
     }
     if (data.TYPE == "USERS") {
@@ -43,41 +56,61 @@ socket.on("MESSAGE", function (msg) {
     }
     if (data.TYPE == "MESSAGES") {
         if (prevmsg) return;
+        // data.MESSAGE.forEach(function (message) {
+        //     document.getElementById("messages").append "<p class='chat-message'><span class='username" + ((message.admin) ? " administrator'>" : "'>") + message.username + "</span> <span class='message'>" + message.message + "</span></p>";
+        //     document.querySelector(".chat-message").appendChild(document.createTextNode(/**/)); // timestamp inside create text node
+        //     var scroller = document.getElementById('messages');
+        //     scroller.scrollTop = scroller.scrollHeight;
+        //     prevmsg = true;
+        //     return;
+        // });
         data.MESSAGE.forEach(function (message) {
-            document.getElementById("messages").innerHTML += "<p><span class='username" + ((message.admin) ? " administrator'>" : "'>") + message.username + "</span> <span class='message'>" + message.message + "</span></p>";
-            var scroller = document.getElementById('messages');
-            scroller.scrollTop = scroller.scrollHeight;
+            var div = document.getElementById("messages");
+            var p = document.createElement("p");
+            var time = document.createElement("p");
+            var username = document.createElement("span");
+            var messageTxt = document.createElement("span");
+            username.appendChild(document.createTextNode(message.username));
+            username.setAttribute("class", "username" + ((message.admin) ? " administrator" : "" + "'>")); 
+            messageTxt.appendChild(document.createTextNode(message.message));
+            messageTxt.setAttribute("class", "message");
+            p.appendChild(username);
+            p.appendChild(messageTxt);
+            p.setAttribute("class", "chat-message");
+            time.appendChild(document.createTextNode(message.timestamp)); // timestamp goes here
+            time.setAttribute("id", "timestamp");
+            p.appendChild(time);
+            div.appendChild(p);
             prevmsg = true;
-            return;
-        });
+        })
     }
 })
 
-function logout() {
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
-    window.location = "../";
-}
+        function logout() {
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+            window.location = "../";
+        }
 
-function tokenGet() {
-    var name = "token";
-    var url = window.location.href + "?" + document.cookie;
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
+        function tokenGet() {
+            var name = "token";
+            var url = window.location.href + "?" + document.cookie;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
 
-function sendMsg() {
-    var message = document.getElementById("messageKey").value;
+        function sendMsg() {
+            var message = document.getElementById("messageKey").value;
 
-    socket.emit("MESSAGE", JSON.stringify({
-        "TYPE": "MESSAGE",
-        "MESSAGE": message,
-        "TOKEN": token,
-        "CHANNEL": channel
-    }));
+            socket.emit("MESSAGE", JSON.stringify({
+                "TYPE": "MESSAGE",
+                "MESSAGE": message,
+                "TOKEN": token,
+                "CHANNEL": channel
+            }));
 
-    document.getElementById("messageKey").value = null;
-}
+            document.getElementById("messageKey").value = null;
+        }

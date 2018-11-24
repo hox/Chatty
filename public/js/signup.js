@@ -30,11 +30,9 @@ socket.on('MESSAGE', function (msg) {
         if (json.MESSAGE == "USERNAME_TAKEN") {
             document.getElementById("userwrong").style = "";
         } else {
-            var exdate = new Date();
-            exdate.setDate(exdate.getDate() + 1440);
-            var c_value = escape(json.MESSAGE) + ((1440 == null) ? "" : "; expires=" + exdate.toUTCString());
+            var c_value = escape(json.MESSAGE) + "; 0";
             document.cookie = "token=" + c_value + "; path=/";
-            window.location.href = "../chat/";
+            window.location.href = "./chat/";
         }
     }
 });

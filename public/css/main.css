@@ -32,6 +32,11 @@ html {
 
 /*#region*/
 
+.a-signup {
+    color: cornflowerblue;
+    font-size: 16px;
+}
+
 .login {
     background-color: #2C3A47;
     margin: 0 auto;
@@ -67,6 +72,31 @@ html {
 
 /*#region*/
 
+.chat-message {
+    padding: 0 16px;
+}
+
+.chat-message:hover {
+    background: #22292e;
+}
+
+.chat-message #timestamp {
+    background-color: #555;
+    border-radius: 6px;
+    text-align: center;
+    visibility: hidden;
+    position: absolute;
+    font-size: 14px;
+    color: #fff;
+    padding: 5px;
+    width: auto;
+    z-index: 1;
+}
+
+.chat-message:hover #timestamp {
+    visibility: visible;
+}
+
 .chat-box .form-group {
     margin: 0 !important;
 }
@@ -97,7 +127,7 @@ html {
 
 .administrator::before {
     content: "⚒ ";
-    color: #2980B9;
+    color: #4ecca3;
 }
 
 .chat-messages {
@@ -105,7 +135,6 @@ html {
     flex-direction: column;
     flex: 1;
     overflow-y: auto;
-    padding: 1px 16px;
     margin-bottom: 42px;
 }
 
@@ -160,7 +189,8 @@ html {
 }
 
 .username:after {
-    content: ' ≫'
+    color: cornflowerblue;
+    content: ' $';
 }
 
 .chat-box {
@@ -176,7 +206,7 @@ html {
     border: none !important;
 }
 
-.form-control:focus {
+.chat-box .form-control:focus {
     color: #fff;
 }
 
