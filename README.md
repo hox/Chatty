@@ -5,8 +5,9 @@ Development started in October of 2018
 
 ## Contributors
 
-- [Ceaser](https://ceasergaming.com) | Lead Backend Developer
+- [Eli](https://ceasergaming.com) | Lead Backend Developer
 - [Luke](https://lukewhrit.xyz) | Lead Frontend Developer
+- [Logan](https://loganhouston.ml) | Full Stack Developer
 
 ## Links
 
