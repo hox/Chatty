@@ -279,7 +279,16 @@ function updateUsers() {
         rows.forEach(function (element) {
             connected.forEach(function (token) {
                 if (element.TOKEN == token) {
-                    onlineusers.push(element.USERNAME);
+                    var admin = false;
+                    admins.forEach(function(adminis) {
+                        if(adminis == element.USERNAME)
+                            admin = true;
+                    });
+                    onlineusers.push({
+                        "username": element.USERNAME,
+                        "channel": "main",
+                        "admin": admin
+                    });
                 }
             });
         });

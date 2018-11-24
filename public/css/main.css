@@ -81,7 +81,7 @@ html {
 }
 
 .chat-message #timestamp {
-    background-color: #555;
+    background-color: #556;
     border-radius: 6px;
     text-align: center;
     visibility: hidden;
@@ -190,7 +190,7 @@ html {
 
 .username:after {
     color: cornflowerblue;
-    content: ' $';
+    content: '  ';
 }
 
 .chat-box {
