@@ -29,7 +29,7 @@ socket.on('MESSAGE', function (msg) {
     if (json.TYPE == "SIGNIN") {
         if (json.MESSAGE == "USERDATA_INVALID") {
             setTimeout(function () {}, 1000);
-            document.getElementById("userwrong").style = "";
+            document.getElementById("userwrong").style = "font-size: 16px;";
         } else {
             var c_value = escape(json.MESSAGE) + "; 0";
             document.cookie = "token=" + c_value + "; path=/";

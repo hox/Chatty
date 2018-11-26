@@ -3,7 +3,7 @@ var channel = "main";
 var socket = io();
 var prevmsg = false;
 
-if (tokenGet() != null || tokenGet() != "undefined") {
+if (tokenGet() != null || tokenGet() != undefined) {
     token = tokenGet();
 } else {
     window.location = "../";
@@ -36,7 +36,7 @@ socket.on("MESSAGE", function (msg) {
         var username = document.createElement("span");
         var messageTxt = document.createElement("span");
         username.appendChild(document.createTextNode(data.USERNAME));
-        username.setAttribute("class", "username" + ((data.ADMIN) ? " administrator" : "" + "'>")); 
+        username.setAttribute("class", "username" + ((data.ADMIN) ? " administrator" : "")); 
         messageTxt.appendChild(document.createTextNode(data.MESSAGE));
         messageTxt.setAttribute("class", "message");
         p.appendChild(username);
@@ -63,7 +63,7 @@ socket.on("MESSAGE", function (msg) {
             var username = document.createElement("span");
             var messageTxt = document.createElement("span");
             username.appendChild(document.createTextNode(message.username));
-            username.setAttribute("class", "username" + ((message.admin) ? " administrator" : "" + "'>")); 
+            username.setAttribute("class", "username" + ((message.admin) ? " administrator" : "")); 
             messageTxt.appendChild(document.createTextNode(message.message));
             messageTxt.setAttribute("class", "message");
             p.appendChild(username);

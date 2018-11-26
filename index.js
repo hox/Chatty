@@ -22,7 +22,7 @@ var httpsServer = https.createServer(credentials, app);
 var io = require('socket.io').listen(httpsServer);
 var SHA256 = require('js-sha256').sha256;
 const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('./../data/users.db');
+let db = new sqlite3.Database('../data/users.db');
 
 db.run(`CREATE TABLE IF NOT EXISTS Users(USERNAME text, PASSWORD text, ADMIN text, TOKEN text)`);
 
@@ -134,6 +134,14 @@ io.on('connection', function (socket) {
                     if (element.TOKEN == json.TOKEN) {
                         var admin = element.ADMIN == 'true';
                         io.emit("MESSAGE", JSON.stringify({
+                            "TYPE": "MESSAGE",
+                            "USERNAME": element.USERNAME,
+                            "MESSAGE": newmessage,
+                            "CHANNEL": json.CHANNEL,
+                            "ADMIN": admin,
+                            "TIMESTAMP": timestamp
+                        }));
+                        console.log(JSON.stringify({
                             "TYPE": "MESSAGE",
                             "USERNAME": element.USERNAME,
                             "MESSAGE": newmessage,
@@ -258,7 +266,7 @@ function writeMessage(username, message, channel) {
 
 function refreshDb() {
     db.close();
-    db = new sqlite3.Database('./../data/users.db');
+    db = new sqlite3.Database('../data/users.db');
 }
 
 function checkMsg(msg) {

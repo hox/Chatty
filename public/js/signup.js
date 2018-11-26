@@ -32,7 +32,7 @@ socket.on('MESSAGE', function (msg) {
         } else {
             var c_value = escape(json.MESSAGE) + "; 0";
             document.cookie = "token=" + c_value + "; path=/";
-            window.location.href = "./chat/";
+            window.location.href = "../chat/";
         }
     }
 });
