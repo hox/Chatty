@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Chakra+Petch');
+﻿@import url('https://fonts.googleapis.com/css?family=Lato');
 
 body,
 html {
     background-color: #2C3A47;
     color: #fff;
-    font-family: "Chakra Petch"
+    font-family: "Lato"
 }
 
 html {
