@@ -80,6 +80,8 @@ io.on('connection', function (socket) {
             return;
         }
 
+        if(json.TOKEN)
+
         if (json.TYPE == "SOCKIN") {
             if (json.TOKEN != undefined) {
                 if (!connected.includes(json.TOKEN)) {
@@ -98,7 +100,7 @@ io.on('connection', function (socket) {
             }
         }
 
-        /*if (json.TYPE == "CHECKTOKEN") {
+        /*if (json.TYPE == "CHECKTOKEN") { //TODO: Make this actually work
             var goodToken = false;
             db.all(`SELECT * from Users`, [], function (err, rows) {
                 if (err) {
@@ -122,6 +124,8 @@ io.on('connection', function (socket) {
                 }));
             }
         }*/
+
+
         if (json.TYPE == "MESSAGE") {
             var newmessage = json.MESSAGE.replaceAll("<", "&lt").replaceAll(">", "&gt;").trim();
             if (!checkMsg(newmessage)) return;
@@ -134,14 +138,6 @@ io.on('connection', function (socket) {
                     if (element.TOKEN == json.TOKEN) {
                         var admin = element.ADMIN == 'true';
                         io.emit("MESSAGE", JSON.stringify({
-                            "TYPE": "MESSAGE",
-                            "USERNAME": element.USERNAME,
-                            "MESSAGE": newmessage,
-                            "CHANNEL": json.CHANNEL,
-                            "ADMIN": admin,
-                            "TIMESTAMP": timestamp
-                        }));
-                        console.log(JSON.stringify({
                             "TYPE": "MESSAGE",
                             "USERNAME": element.USERNAME,
                             "MESSAGE": newmessage,

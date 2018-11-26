@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Chakra+Petch');
+
 body,
 html {
     background-color: #2C3A47;
     color: #fff;
+    font-family: "Chakra Petch"
 }
 
 html {
@@ -73,7 +76,7 @@ html {
 /*#region*/
 
 .chat-message {
-    padding: 0 16px;
+    padding: 0 5px;
 }
 
 .chat-message:hover {
@@ -189,8 +192,7 @@ html {
 }
 
 .username:after {
-    color: cornflowerblue;
-    content: '  ';
+    content: ' > ';
 }
 
 .chat-box {

@@ -46,6 +46,7 @@ socket.on("MESSAGE", function (msg) {
         time.setAttribute("id", "timestamp");
         p.appendChild(time);
         div.appendChild(p);
+        div.scrollTop = div.scrollHeight;
         return;
     }
     if (data.TYPE == "USERS") {
@@ -73,10 +74,11 @@ socket.on("MESSAGE", function (msg) {
             time.setAttribute("id", "timestamp");
             p.appendChild(time);
             div.appendChild(p);
+            div.scrollTop = div.scrollHeight;
             prevmsg = true;
-        })
+        });
     }
-})
+});
 
 function logout() {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
