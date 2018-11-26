@@ -34,6 +34,10 @@ app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('*', function(req, res) {
+    res.sendfile(__dirname + "/err/404.html");
+});
+
 httpsServer.listen(PORT, function () {
     console.log(`Now listening to * on port ${PORT}`);
 });
@@ -189,6 +193,12 @@ io.on('connection', function (socket) {
                         return;
                     }
                 });
+                if(!usernameChecker(json.USERNAME)) {
+                    socket.emit("MESSAGE", JSON.stringify({
+                        "TYPE": "SIGNUP",
+                        "MESSAGE": "CHAR_INVALID"
+                    }));
+                }
                 rtg.generateKey({
                     len: 32,
                     string: true,
@@ -301,4 +311,12 @@ function updateUsers() {
             "MESSAGE": onlineusers
         }));
     });
+}
+
+function usernameChecker(username) {
+    var usernameRegex = /^[a-zA-Z0-9]+$/;
+    var validUsername = username.match(usernameRegex);
+    if(validUsername == null){
+        return false;
+    }
 }

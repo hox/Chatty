@@ -29,7 +29,8 @@ socket.on('MESSAGE', function (msg) {
     if (json.TYPE == "SIGNUP") {
         if (json.MESSAGE == "USERNAME_TAKEN") {
             document.getElementById("userwrong").style = "";
-        } else {
+        }
+        else {
             var c_value = escape(json.MESSAGE) + "; 0";
             document.cookie = "token=" + c_value + "; path=/";
             window.location.href = "../chat/";
