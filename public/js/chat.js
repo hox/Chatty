@@ -1,12 +1,20 @@
 var token;
-var channel = "main";
-var socket = io();
+var channel;
 var prevmsg = false;
+
+var socket = io();
 
 if (tokenGet() != null || tokenGet() != undefined) {
     token = tokenGet();
 } else {
     window.location = "../";
+}
+
+if (channelGet() == null || channelGet == undefined) {
+    channel = "main";
+    document.cookie = "channel=main; path=/";
+} else {
+    channel = channelGet();
 }
 
 function leaveSocket() {
@@ -17,6 +25,8 @@ function leaveSocket() {
 }
 
 socket.on("connect", function () {
+    document.getElementById("channel").innerText = channel;
+    document.getElementById("messageKey").placeholder = "Send a message to #" + channel;
     socket.emit("MESSAGE", JSON.stringify({
         "TYPE": "SOCKIN",
         "TOKEN": token
@@ -25,7 +35,7 @@ socket.on("connect", function () {
         "TYPE": "MESSAGES",
         "CHANNEL": channel
     }));
-})
+});
 
 socket.on("MESSAGE", function (msg) {
     var data = JSON.parse(msg);
@@ -36,7 +46,7 @@ socket.on("MESSAGE", function (msg) {
         var username = document.createElement("span");
         var messageTxt = document.createElement("span");
         username.appendChild(document.createTextNode(data.USERNAME));
-        username.setAttribute("class", "username" + ((data.ADMIN) ? " administrator" : "")); 
+        username.setAttribute("class", "username" + ((data.ADMIN) ? " administrator" : ""));
         messageTxt.appendChild(document.createTextNode(data.MESSAGE));
         messageTxt.setAttribute("class", "message");
         p.appendChild(username);
@@ -52,11 +62,14 @@ socket.on("MESSAGE", function (msg) {
     if (data.TYPE == "USERS") {
         document.getElementById("users").innerHTML = null;
         data.MESSAGE.forEach(function (user) {
-            document.getElementById("users").innerHTML += "<li><a" + ((user.admin) ? " class='administrator'" : "") + ">" + user.username + " - #" + user.channel + "</a></li>";
+            document.getElementById("users").innerHTML += "<li><p" + ((user.admin) ? " class='administrator'" : "") + ">" + user.username + " - <a href='javascript:setChannel(`" + user.channel + "`);'>#" + user.channel + "</a></p></li>";
         });
     }
     if (data.TYPE == "MESSAGES") {
         if (prevmsg) return;
+        if (data.MESSAGE.length == 0) {
+            document.getElementById("messages").innerHTML += "<p class='pastmsg'>There are no past messages in this channel</p>";
+        }
         data.MESSAGE.forEach(function (message) {
             var div = document.getElementById("messages");
             var p = document.createElement("p");
@@ -64,7 +77,7 @@ socket.on("MESSAGE", function (msg) {
             var username = document.createElement("span");
             var messageTxt = document.createElement("span");
             username.appendChild(document.createTextNode(message.username));
-            username.setAttribute("class", "username" + ((message.admin) ? " administrator" : "")); 
+            username.setAttribute("class", "username" + ((message.admin) ? " administrator" : ""));
             messageTxt.appendChild(document.createTextNode(message.message));
             messageTxt.setAttribute("class", "message");
             p.appendChild(username);
@@ -86,14 +99,18 @@ function logout() {
 }
 
 function tokenGet() {
-    var name = "token";
-    var url = window.location.href + "?" + document.cookie;
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    var cookiestring = RegExp("token[^;]+").exec(document.cookie);
+    return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./, "") : "");
+}
+
+function channelGet() {
+    var cookiestring = RegExp("channel[^;]+").exec(document.cookie);
+    return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./, "") : "");
+}
+
+function setChannel(channel) {
+    document.cookie = "channel=" + channel + "; path=/";
+    location.reload();
 }
 
 function sendMsg() {
