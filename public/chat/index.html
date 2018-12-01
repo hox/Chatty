@@ -16,13 +16,7 @@
 <body class="chat" onbeforeunload="leaveSocket();">
     <div class="chat-side">
         <div class="chat-container">
-            <div class="banner">
-                <p>Chatty</p>
-            </div>
-            <hr>
-            <div class="channel">
-                <p id="channel">main</p>
-            </div>
+            <h1>Chatty</h1>
             <hr>
             <div id="users"></div>
             <div class="logout">
@@ -31,13 +25,16 @@
         </div>
     </div>
     <div class="chat-content">
+        <div class="chat-channel">
+            <h1 id="channel"></h1>
+        </div>
         <div class="chat-messages" id="messages">
         </div>
         <div class="chat-box">
             <form onSubmit="sendMsg(); return false;">
                 <div class="form-group">
-                    <input data-lpignore=true type="text" class="form-control message-field" value="" placeholder="Send a message to chat.."
-                        id="messageKey" autocomplete="off">
+                    <input data-lpignore=true type="text" class="form-control message-field" value="" placeholder="" id="messageKey"
+                        autocomplete="off">
                 </div>
             </form>
         </div>

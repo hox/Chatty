@@ -1,10 +1,11 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Chakra+Petch');
 
 body,
 html {
-    background-color: #2C3A47;
-    color: #fff;
-    font-family: "Lato"
+    background-color: #201F1D;
+    color: #eee;
+    font-family: "Chakra Petch"
 }
 
 html {
@@ -34,37 +35,48 @@ html {
  */
 
 /*#region*/
-
-.a-signup {
-    color: cornflowerblue;
-    font-size: 16px;
-}
-
 .login {
-    background-color: #2C3A47;
-    margin: 0 auto;
+    /*background-color: #2C3A47;*/
+    margin: 0 auto !important;
     display: flex;
     justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.login h1 {
+    margin: 0 !important;
+}
+
+.form-group {
+    margin-bottom: 5px !important;
+}
+
+.login .label {
+    float: left;
+    text-align: left;
 }
 
 .login-form {
-    background-color: #edeff1;
+    top: 10vh;
+    background-color: #263238;
     padding: 24px 23px 20px;
     position: relative;
     border-radius: 6px;
-    width: 471px;
+    width: 50vh;
+    text-align: center !important;
 }
 
-.login-form .login-field:focus {
-    border-color: #e74c3c !important;
+.login-form .login-field {
+    background-color: #212121;
+    color: #eee;
+    font-family: "Chakra Petch";
 }
 
-.login-form .login-field:focus+.login-field-icon {
-    color: #e74c3c !important;
-}
-
-.login-link:hover {
-    color: #e74c3c !important;
+.login .btn {
+    color: #eee !important;
+    width: 100% !important;
+    background-color: #212121 !important;
 }
 
 /*#endregion*/
@@ -74,6 +86,26 @@ html {
  */
 
 /*#region*/
+
+.pastmsg {
+    text-align: center;
+    padding-right: 250px;
+}
+
+.chat-channel {
+    background-color: #201F1D;
+    height: 50px;
+    width: 100%;
+}
+
+.chat-channel h1 {
+    margin: 0 !important;
+    height: 100%;
+}
+
+.chat-channel h1::before {
+    content: "#";
+}
 
 .chat-message {
     padding: 0 5px;
@@ -139,6 +171,7 @@ html {
     flex: 1;
     overflow-y: auto;
     margin-bottom: 42px;
+    background-color: #263238;
 }
 
 .chat-box {
@@ -150,7 +183,7 @@ html {
     margin: 0;
     padding: 0;
     width: 250px;
-    background-color: #1e272e;
+    background-color: #201F1D;
     position: fixed;
     height: 100%;
     text-align: center;
@@ -166,15 +199,6 @@ html {
 
 .chat-side #channel:before {
     content: 'Connected to #';
-}
-
-.chat-side .banner {
-    background-color: #2980B9 !important;
-    text-align: center;
-    color: #edeff1 !important;
-    font-size: 18px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
 }
 
 .chat-side .chat-container {
@@ -198,7 +222,7 @@ html {
 .chat-box {
     margin: 0;
     padding: 0;
-    background-color: #1e272e !important;
+    background-color: #201F1D !important;
     width: calc(100% - 250px);
     color: #fff !important;
     padding-bottom: 0;
