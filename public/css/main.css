@@ -42,6 +42,7 @@ html {
     justify-content: center;
     text-align: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .login h1 {

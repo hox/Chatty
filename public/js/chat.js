@@ -10,7 +10,7 @@ if (tokenGet() != null || tokenGet() != undefined) {
     window.location = "../";
 }
 
-if (channelGet() == null || channelGet == undefined) {
+if (channelGet() == null || channelGet() == undefined) {
     channel = "main";
     document.cookie = "channel=main; path=/";
 } else {
@@ -30,7 +30,8 @@ socket.on("connect", function () {
     document.getElementById("chanswitcher").value = channel;
     socket.emit("MESSAGE", JSON.stringify({
         "TYPE": "SOCKIN",
-        "TOKEN": token
+        "TOKEN": token,
+        "CHANNEL": channel
     }));
     socket.emit("MESSAGE", JSON.stringify({
         "TYPE": "MESSAGES",

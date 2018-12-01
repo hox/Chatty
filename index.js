@@ -71,6 +71,7 @@ setInterval(function () {
         hours = hours % 12;
         ampm = " PM";
     }
+    if (hours == 0) hours = 12;
     timestamp = date.toDateString() + " @ " + hours + ":" + minutes + ampm;
 }, 1000);
 
@@ -88,8 +89,17 @@ io.on('connection', function (socket) {
 
             if (json.TYPE == "SOCKIN") {
                 if (json.TOKEN != undefined) {
-                    if (!connected.includes(json.TOKEN)) {
-                        connected.push(json.TOKEN);
+                    var noUserFound = false;
+                    connected.forEach(function (connectedUser) {
+                        if (connectedUser.token != json.TOKEN) {
+                            noUserFound = true;
+                        }
+                    });
+                    if (!noUserFound) {
+                        connected.push({
+                            "token": json.TOKEN,
+                            "channel": json.CHANNEL
+                        });
                         updateUsers();
                     }
                 }
@@ -97,8 +107,16 @@ io.on('connection', function (socket) {
 
         if (json.TYPE == "SOCKOUT") {
             if (json.TOKEN != undefined) {
-                if (connected.includes(json.TOKEN)) {
-                    connected.splice(connected.indexOf(json.TOKEN));
+                var noUserFound;
+                connected.forEach(function (connectedUser) {
+                    if (connectedUser.token == json.TOKEN) {
+                        noUserFound = connectedUser;
+                    }
+                });
+                if (noUserFound != null) {
+                    connected.splice(connected.find(function () {
+                        return noUserFound.token == json.TOKEN;
+                    }));
                     updateUsers();
                 }
             }
@@ -315,8 +333,8 @@ function updateUsers() {
             throw err;
         }
         rows.forEach(function (element) {
-            connected.forEach(function (token) {
-                if (element.TOKEN == token) {
+            connected.forEach(function (user) {
+                if (element.TOKEN == user.token) {
                     var admin = false;
                     admins.forEach(function (adminis) {
                         if (adminis == element.USERNAME)
@@ -324,7 +342,7 @@ function updateUsers() {
                     });
                     onlineusers.push({
                         "username": element.USERNAME,
-                        "channel": "main",
+                        "channel": user.channel,
                         "admin": admin
                     });
                 }
