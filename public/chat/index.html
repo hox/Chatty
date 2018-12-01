@@ -18,6 +18,11 @@
         <div class="chat-container">
             <h1>Chatty</h1>
             <hr>
+            <p>Channel</p>
+            <form onsubmit="setChannel(document.getElementById('chanswitcher').value); return false;">
+                <input type="text" id="chanswitcher" class="form-control">
+            </form>
+            <hr>
             <div id="users"></div>
             <div class="logout">
                 <a class="fui-exit" href="javascript:logout()"></a>

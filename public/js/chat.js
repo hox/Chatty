@@ -27,6 +27,7 @@ function leaveSocket() {
 socket.on("connect", function () {
     document.getElementById("channel").innerText = channel;
     document.getElementById("messageKey").placeholder = "Send a message to #" + channel;
+    document.getElementById("chanswitcher").value = channel;
     socket.emit("MESSAGE", JSON.stringify({
         "TYPE": "SOCKIN",
         "TOKEN": token

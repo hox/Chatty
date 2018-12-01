@@ -227,7 +227,12 @@ io.on('connection', function (socket) {
                         foundFile = true;
                         fs.readFile("./../data/logs/" + filename, "utf8", function (err, data) {
                             var json = JSON.parse(data);
-                            for (i = 0; i < 10; i++) {
+                            var max = 10;
+                            for (i = 0; i < max; i++) {
+                                if (json.logs[i] == null) {
+                                    max--;
+                                    continue;
+                                }
                                 var admin = false;
                                 admins.forEach(function (username) {
                                     if (username == json.logs[i].username)
@@ -267,8 +272,10 @@ String.prototype.replaceAll = function (search, replacement) {
 function writeMessage(username, message, channel) {
     if (!checkMsg(message)) return;
     var files = fs.readdirSync("./../data/logs", "utf8");
+    var logIsSaved = false;
     files.forEach(function (logname) {
         if (logname == channel + ".json") {
+            logIsSaved = true;
             var json = JSON.parse(fs.readFileSync("./../data/logs/" + logname, "utf8"));
             json.logs.unshift({
                 "username": username,
@@ -278,6 +285,13 @@ function writeMessage(username, message, channel) {
             fs.writeFileSync("./../data/logs/" + logname, JSON.stringify(json));
         }
     });
+    if (!logIsSaved) {
+        var jsonDefault = {
+            "logs": []
+        };
+        fs.writeFileSync("./../data/logs/" + channel + ".json", JSON.stringify(jsonDefault));
+        writeMessage(username, message, channel);
+    }
 }
 
 function refreshDb() {

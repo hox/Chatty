@@ -207,6 +207,16 @@ html {
     height: 100%;
 }
 
+.chat-side .chat-container .form-control {
+    background-color: #212121;
+    color: #eee !important;
+    border-color: #22292e !important;
+}
+
+.chat-side .chat-container .form-control ::before {
+    content: "#";
+}
+
 .chat-side .chat-container a.btn {
     font-size: 18px;
 }
