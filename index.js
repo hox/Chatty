@@ -29,13 +29,13 @@ db.run(`CREATE TABLE IF NOT EXISTS Users(USERNAME text, PASSWORD text, ADMIN tex
 const PORT = 443;
 
 app.use(express.static(__dirname + '/public'));
-
+app.disable('x-powered-by');
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('*', function(req, res) {
-    res.sendfile(__dirname + "/err/404.html");
+app.get('*', function (req, res) {
+    res.sendFile(__dirname + "/err/404.html");
 });
 
 httpsServer.listen(PORT, function () {
@@ -57,7 +57,7 @@ db.all(`SELECT * from Users`, [], function (err, rows) {
 var connected = [];
 var timestamp = "";
 
-setInterval(function() {
+setInterval(function () {
     var date = new Date();
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -69,7 +69,7 @@ setInterval(function() {
         hours = "0" + hours;
     } else if (hours > 12) {
         hours = hours % 12;
-        ampm = " PM";                        
+        ampm = " PM";
     }
     timestamp = date.toDateString() + " @ " + hours + ":" + minutes + ampm;
 }, 1000);
@@ -84,16 +84,16 @@ io.on('connection', function (socket) {
             return;
         }
 
-        if(json.TOKEN)
+        if (json.TOKEN)
 
-        if (json.TYPE == "SOCKIN") {
-            if (json.TOKEN != undefined) {
-                if (!connected.includes(json.TOKEN)) {
-                    connected.push(json.TOKEN);
-                    updateUsers();
+            if (json.TYPE == "SOCKIN") {
+                if (json.TOKEN != undefined) {
+                    if (!connected.includes(json.TOKEN)) {
+                        connected.push(json.TOKEN);
+                        updateUsers();
+                    }
                 }
             }
-        }
 
         if (json.TYPE == "SOCKOUT") {
             if (json.TOKEN != undefined) {
@@ -193,7 +193,7 @@ io.on('connection', function (socket) {
                         return;
                     }
                 });
-                if(!usernameChecker(json.USERNAME)) {
+                if (!usernameChecker(json.USERNAME)) {
                     socket.emit("MESSAGE", JSON.stringify({
                         "TYPE": "SIGNUP",
                         "MESSAGE": "CHAR_INVALID"
@@ -220,29 +220,39 @@ io.on('connection', function (socket) {
             var channel = json.CHANNEL;
             if (channel == "") return;
             var msgarray = [];
-            fs.readdir("./../data/logs/", function (err, filename) {
-                if (filename == channel + ".json") {
-                    fs.readFile("./../data/logs/" + filename, "utf8", function (err, data) {
-                        var json = JSON.parse(data);
-                        for (i = 0; i < 10; i++) {
-                            var admin = false;
-                            admins.forEach(function (username) {
-                                if (username == json.logs[i].username)
-                                    admin = true;
-                            });
-                            var message = {
-                                "username": json.logs[i].username,
-                                "message": json.logs[i].message,
-                                "admin": admin,
-                                "timestamp": json.logs[i].timestamp
-                            };
-                            msgarray.unshift(message);
-                        }
-                        socket.emit("MESSAGE", JSON.stringify({
-                            "TYPE": "MESSAGES",
-                            "MESSAGE": msgarray
-                        }));
-                    });
+            fs.readdir("./../data/logs/", function (err, files) {
+                var foundFile = false;
+                files.forEach(function (filename) {
+                    if (filename == channel + ".json") {
+                        foundFile = true;
+                        fs.readFile("./../data/logs/" + filename, "utf8", function (err, data) {
+                            var json = JSON.parse(data);
+                            for (i = 0; i < 10; i++) {
+                                var admin = false;
+                                admins.forEach(function (username) {
+                                    if (username == json.logs[i].username)
+                                        admin = true;
+                                });
+                                var message = {
+                                    "username": json.logs[i].username,
+                                    "message": json.logs[i].message,
+                                    "admin": admin,
+                                    "timestamp": json.logs[i].timestamp
+                                };
+                                msgarray.unshift(message);
+                            }
+                            socket.emit("MESSAGE", JSON.stringify({
+                                "TYPE": "MESSAGES",
+                                "MESSAGE": msgarray
+                            }));
+                        });
+                    }
+                });
+                if (!foundFile) {
+                    socket.emit("MESSAGE", JSON.stringify({
+                        "TYPE": "MESSAGES",
+                        "MESSAGE": []
+                    }));
                 }
             });
         }
@@ -294,8 +304,8 @@ function updateUsers() {
             connected.forEach(function (token) {
                 if (element.TOKEN == token) {
                     var admin = false;
-                    admins.forEach(function(adminis) {
-                        if(adminis == element.USERNAME)
+                    admins.forEach(function (adminis) {
+                        if (adminis == element.USERNAME)
                             admin = true;
                     });
                     onlineusers.push({
@@ -316,7 +326,7 @@ function updateUsers() {
 function usernameChecker(username) {
     var usernameRegex = /^[a-zA-Z0-9]+$/;
     var validUsername = username.match(usernameRegex);
-    if(validUsername == null){
+    if (validUsername == null) {
         return false;
     }
 }
