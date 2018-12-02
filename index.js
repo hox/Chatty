@@ -98,7 +98,7 @@ io.on('connection', function (socket) {
                     if (!noUserFound) {
                         connected.push({
                             "token": json.TOKEN,
-                            "channel": json.CHANNEL,
+                            "channel": json.CHANNEL.toLowerCase(),
                             "ssId": socket.id
                         });
                         updateUsers();
@@ -162,17 +162,17 @@ io.on('connection', function (socket) {
                         var admin = element.ADMIN == 'true';
                         connected.forEach(function (conUser) {
                             var sockId = conUser.ssId;
-                            if (conUser.channel != json.CHANNEL) return;
+                            if (conUser.channel != json.CHANNEL.toLowerCase()) return;
                             io.sockets.connected[sockId].emit("MESSAGE", JSON.stringify({
                                 "TYPE": "MESSAGE",
                                 "USERNAME": element.USERNAME,
                                 "MESSAGE": newmessage,
-                                "CHANNEL": json.CHANNEL,
+                                "CHANNEL": json.CHANNEL.toLowerCase(),
                                 "ADMIN": admin,
                                 "TIMESTAMP": timestamp
-                            }))
+                            }));
                         });
-                        writeMessage(element.USERNAME, json.MESSAGE, json.CHANNEL);
+                        writeMessage(element.USERNAME, json.MESSAGE, json.CHANNEL.toLowerCase());
                     }
                 });
             });
@@ -240,7 +240,7 @@ io.on('connection', function (socket) {
         }
         if (json.TYPE == "MESSAGES") {
             refreshDb();
-            var channel = json.CHANNEL;
+            var channel = json.CHANNEL.toLowerCase();
             if (channel == "") return;
             var msgarray = [];
             fs.readdir("./../data/logs/", function (err, files) {

@@ -19,7 +19,7 @@
             <h1>Chatty</h1>
             <hr>
             <p>Channel</p>
-            <form onsubmit="setChannel(document.getElementById('chanswitcher').value); return false;">
+            <form onsubmit="setChannel(document.getElementById('chanswitcher').value.toLowerCase()); return false;">
                 <input type="text" id="chanswitcher" class="form-control">
             </form>
             <hr>
