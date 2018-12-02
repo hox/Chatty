@@ -4,13 +4,13 @@ var prevmsg = false;
 
 var socket = io();
 
-if (tokenGet() != null || tokenGet() != undefined) {
+if (tokenGet() != null || tokenGet() != undefined || tokenGet() == "") {
     token = tokenGet();
 } else {
     window.location = "../";
 }
 
-if (channelGet() == null || channelGet() == undefined) {
+if (channelGet() == null || channelGet() == undefined || channelGet() == "") {
     channel = "main";
     document.cookie = "channel=main; path=/";
 } else {
@@ -42,6 +42,7 @@ socket.on("connect", function () {
 socket.on("MESSAGE", function (msg) {
     var data = JSON.parse(msg);
     if (data.TYPE == "MESSAGE") {
+        if (data.CHANNEL != channel) return;
         var div = document.getElementById("messages");
         var p = document.createElement("p");
         var time = document.createElement("p");
