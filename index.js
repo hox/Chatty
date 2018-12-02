@@ -98,7 +98,8 @@ io.on('connection', function (socket) {
                     if (!noUserFound) {
                         connected.push({
                             "token": json.TOKEN,
-                            "channel": json.CHANNEL
+                            "channel": json.CHANNEL,
+                            "ssId": socket.id
                         });
                         updateUsers();
                     }
@@ -159,14 +160,18 @@ io.on('connection', function (socket) {
                 rows.forEach(function (element) {
                     if (element.TOKEN == json.TOKEN) {
                         var admin = element.ADMIN == 'true';
-                        io.emit("MESSAGE", JSON.stringify({
-                            "TYPE": "MESSAGE",
-                            "USERNAME": element.USERNAME,
-                            "MESSAGE": newmessage,
-                            "CHANNEL": json.CHANNEL,
-                            "ADMIN": admin,
-                            "TIMESTAMP": timestamp
-                        }));
+                        connected.forEach(function (conUser) {
+                            var sockId = conUser.ssId;
+                            if (conUser.channel != json.CHANNEL) return;
+                            io.sockets.connected[sockId].emit("MESSAGE", JSON.stringify({
+                                "TYPE": "MESSAGE",
+                                "USERNAME": element.USERNAME,
+                                "MESSAGE": newmessage,
+                                "CHANNEL": json.CHANNEL,
+                                "ADMIN": admin,
+                                "TIMESTAMP": timestamp
+                            }))
+                        });
                         writeMessage(element.USERNAME, json.MESSAGE, json.CHANNEL);
                     }
                 });
